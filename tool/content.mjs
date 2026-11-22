@@ -1,7 +1,7 @@
 // Page content for vonmi.app. Edit here, then run: node tool/build.mjs
 // Every legal change: update UPDATED and keep EN and PL in sync.
 
-export const OWNER = '[[OWNER_NAME]]';
+export const OWNER = 'Sebastian Lech';
 export const EMAIL = 'sebastianlech.mobile@gmail.com';
 export const UPDATED = { en: '22 November 2026', pl: '22 listopada 2026' };
 
