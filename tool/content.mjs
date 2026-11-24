@@ -41,6 +41,11 @@ export const T = {
     available: 'available in stores',
     soon: 'coming soon',
     features: 'Features',
+    linksBio: 'I build mobile apps for iOS and Android',
+    linksApps: '// my apps',
+    linksContact: '// contact',
+    supportHint: 'Help with the apps',
+    fullSite: 'Full website',
     services: [
       'iOS and Android apps in Flutter',
       'Interface design',
@@ -85,6 +90,11 @@ export const T = {
     available: 'dostępna w sklepach',
     soon: 'wkrótce',
     features: 'Funkcje',
+    linksBio: 'Tworzę aplikacje mobilne na iOS i Androida',
+    linksApps: '// moje aplikacje',
+    linksContact: '// kontakt',
+    supportHint: 'Pomoc w sprawie aplikacji',
+    fullSite: 'Pełna strona',
     services: [
       'Aplikacje na iOS i Androida we Flutterze',
       'Projekt interfejsu',

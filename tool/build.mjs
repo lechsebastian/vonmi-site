@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { T, UPDATED, SOCIAL, APPS, privacy, terms, deleteAccount } from './content.mjs';
+import { T, UPDATED, EMAIL, SOCIAL, APPS, privacy, terms, deleteAccount } from './content.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const LANGS = ['en', 'pl'];
@@ -254,6 +254,83 @@ ${docs.map(([label, href]) => `  <li><a href="${href}">${label}<span aria-hidden
 <p>${t.supportText}</p>
 </div>`,
     }));
+  }
+
+  // Link-in-bio page (/links) for Instagram: own minimal layout, one column.
+  {
+    const file = `${p}links/index.html`;
+    const altFile = `${po}links/index.html`;
+    const url = `https://vonmi.app/${p}links/`;
+    const row = (href, icon, title, hint) =>
+      `<a class="lt-row" href="${href}">${icon}<span>${title}${hint ? `<small>${hint}</small>` : ''}</span><span class="lt-chev" aria-hidden="true">→</span></a>`;
+    const apps = APPS.map((app) => {
+      const page = rel(file, `${p}${app.slug}/`);
+      const stores = app.stores
+        ? `<div class="lt-stores">
+        <a class="lt-store" data-os="ios" href="${app.stores.appStore}">App Store</a>
+        <a class="lt-store" data-os="android" href="${app.stores.googlePlay}">Google Play</a>
+      </div>`
+        : `<div class="lt-soon"><i class="dot soon"></i>${t.comingSoonStores}</div>`;
+      return `<div class="lt-app">
+      <a class="lt-app-top" href="${page}">
+        ${appIcon(app, file, 52)}
+        <span><strong>${app.name[lang]}</strong><small>${app.tag[lang]}</small></span>
+        <span class="lt-chev" aria-hidden="true">→</span>
+      </a>
+      ${stores}
+    </div>`;
+    }).join('\n    ');
+    write(file, `<!doctype html>
+<html lang="${lang}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>vonmi · links</title>
+<meta name="description" content="${t.linksBio}">
+<meta name="theme-color" content="#0A0C11">
+<meta property="og:type" content="website">
+<meta property="og:title" content="vonmi">
+<meta property="og:description" content="${t.linksBio}">
+<meta property="og:url" content="${url}">
+<link rel="canonical" href="${url}">
+<link rel="icon" href="${rel(file, 'favicon.svg')}" type="image/svg+xml">
+<link rel="stylesheet" href="${rel(file, 'assets/style.css')}">
+<link rel="alternate" hreflang="${other}" href="https://vonmi.app/${po}links/">
+</head>
+<body class="lt">
+<div class="lt-glow" aria-hidden="true"></div>
+<main class="lt-main">
+  <a class="lang-switch lt-lang" href="${rel(file, altFile.replace(/index\.html$/, ''))}" hreflang="${other}" aria-label="${other === 'en' ? 'Switch to English' : 'Przełącz na polski'}">${['pl', 'en']
+    .map((l) => `<span${l === lang ? ' class="on"' : ''}>${l.toUpperCase()}</span>`)
+    .join('')}</a>
+  <section class="lt-profile">
+    ${fs.readFileSync(path.join(root, 'favicon.svg'), 'utf8').trim()
+      .replace('<svg ', '<svg class="lt-logo" width="88" height="88" aria-hidden="true" ')}
+    <h1>vonmi<b>_</b></h1>
+    <p>${t.linksBio}</p>
+  </section>
+  <p class="lt-group">${t.linksApps}</p>
+  <div class="lt-list">
+    ${apps}
+  </div>
+  <p class="lt-group">${t.linksContact}</p>
+  <div class="lt-list">
+    ${row(`mailto:${EMAIL}`, svg('<rect x="2" y="4" width="20" height="16" rx="3"/><path d="m3 6 9 7 9-7"/>'), EMAIL, t.supportHint)}
+    ${row(rel(file, p), svg('<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>'), 'vonmi.app', t.fullSite)}
+  </div>
+  <footer class="lt-footer">${t.footer}</footer>
+</main>
+<script>
+// Highlights the store for the visitor's phone; both buttons stay visible.
+(() => {
+  const ua = navigator.userAgent;
+  const os = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1) ? 'ios' : /Android/.test(ua) ? 'android' : null;
+  if (os) document.querySelectorAll('[data-os="' + os + '"]').forEach((a) => a.classList.add('primary'));
+})();
+</script>
+</body>
+</html>
+`);
   }
 
   // Legal pages (Spendio)
