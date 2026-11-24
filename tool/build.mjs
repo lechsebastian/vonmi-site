@@ -6,8 +6,9 @@ import { fileURLToPath } from 'node:url';
 import { T, UPDATED, EMAIL, SOCIAL, APPS, privacy, terms, deleteAccount } from './content.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const LANGS = ['en', 'pl'];
-const prefix = (lang) => (lang === 'en' ? '' : 'pl/');
+// Polish is the default language (site root); English lives under /en/.
+const LANGS = ['pl', 'en'];
+const prefix = (lang) => (lang === 'pl' ? '' : 'en/');
 
 // Wallet glyph (Spendio icon 5D) on its tile; 100x100 box.
 const spendioIcon = (size) =>
@@ -101,7 +102,9 @@ ${isHome ? rotatorScript : ''}
 `;
 }
 
+const polishFiles = [];
 function write(file, html) {
+  if (/^<!doctype html>\s*<html lang="pl">/.test(html)) polishFiles.push(file);
   const out = path.join(root, file);
   fs.mkdirSync(path.dirname(out), { recursive: true });
   fs.writeFileSync(out, html);
@@ -256,10 +259,9 @@ ${docs.map(([label, href]) => `  <li><a href="${href}">${label}<span aria-hidden
     }));
   }
 
-  // Link-in-bio page for Instagram: own minimal layout, one column.
-  // Polish is the default here (/links), English lives at /en/links.
+  // Link-in-bio page for Instagram (/links): own minimal layout, one column.
   {
-    const linksPath = (l) => (l === 'pl' ? 'links/' : 'en/links/');
+    const linksPath = (l) => `${prefix(l)}links/`;
     const file = `${linksPath(lang)}index.html`;
     const altFile = `${linksPath(other)}index.html`;
     const url = `https://vonmi.app/${linksPath(lang)}`;
@@ -366,13 +368,17 @@ ${body}
   }
 }
 
-// Old address of the Polish links page, kept as a redirect.
-write('pl/links/index.html', `<!doctype html>
-<html lang="pl"><head><meta charset="utf-8"><title>vonmi · links</title>
-<meta name="robots" content="noindex"><link rel="canonical" href="https://vonmi.app/links/">
-<meta http-equiv="refresh" content="0; url=../../links/"></head>
-<body><a href="../../links/">vonmi.app/links</a></body></html>
+// Polish pages used to live under /pl/: keep those addresses as redirects.
+for (const file of [...polishFiles]) {
+  const target = file.replace(/index\.html$/, '');
+  const old = `pl/${file}`;
+  write(old, `<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><title>vonmi</title>
+<meta name="robots" content="noindex"><link rel="canonical" href="https://vonmi.app/${target}">
+<meta http-equiv="refresh" content="0; url=${rel(old, target)}"></head>
+<body><a href="${rel(old, target)}">vonmi.app/${target}</a></body></html>
 `);
+}
 
 // 404 (bilingual, absolute links: served from any path)
 write('404.html', `<!doctype html>
