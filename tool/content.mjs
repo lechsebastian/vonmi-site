@@ -7,42 +7,157 @@ export const UPDATED = { en: '22 November 2026', pl: '22 listopada 2026' };
 
 const mail = `<a href="mailto:${EMAIL}">${EMAIL}</a>`;
 
+// Contact on the site goes through these profiles (no email outside support and legal pages).
+export const SOCIAL = [
+  { type: 'linkedin', name: 'LinkedIn', url: 'https://www.linkedin.com/in/sebastianlech/' },
+  { type: 'instagram', name: 'Instagram', url: 'https://instagram.com/mobile.design.developer' },
+];
+
 export const T = {
   en: {
     langName: 'English',
     otherLang: 'Polski',
     updated: 'Last updated',
-    footer: `© 2026 ${OWNER} · vonmi`,
-    homeTitle: 'vonmi',
-    homeLead: 'Small, calm apps that respect your time and your data.',
-    apps: 'Apps',
-    spendioTag: 'Expense tracking that is simple on day one and detailed when you want it.',
+    footer: `© 2026 ${OWNER}`,
+    homeDescription: 'Independent mobile developer building my own iOS and Android apps, and available to build yours.',
+    heroSr: 'I design, build, ship and grow mobile apps.',
+    heroHtml: 'I <span class="rot" data-words="design|build|ship|grow">design</span> mobile apps.',
+    homeLead: 'I make my own iOS and Android apps, and I can build yours too.',
+    seeApps: 'See my apps',
+    workWithMe: 'Work with me',
+    apps: 'My apps',
+    workTitle: 'Need an app?',
+    workText:
+      'Have an idea for an app? I can take it from the first sketch through code to release in the App Store and Google Play, the same way I build my own.',
+    services: [
+      'iOS and Android apps in Flutter',
+      'Interface design',
+      'Accounts, sync and backend with Firebase',
+      'Release in the App Store and Google Play',
+      'Subscriptions and in-app purchases',
+      'AI-powered features',
+    ],
+    messageLinkedIn: 'Message me on LinkedIn',
+    messageInstagram: 'Write on Instagram',
+    onStores: 'App Store · Google Play',
+    comingSoon: 'Coming soon',
+    comingSoonStores: 'Coming soon to the App Store and Google Play.',
+    appStore: 'Download on the App Store',
+    googlePlay: 'Get it on Google Play',
     privacy: 'Privacy Policy',
     terms: 'Terms of Use',
     deleteAccount: 'Delete your account',
     support: 'Support',
     supportText: `Questions, problems or feedback: ${mail}`,
-    spendioIntro:
-      'Spendio helps you record expenses and income, set budgets and see where your money goes. Your data syncs between your iPhone, iPad and Android devices through your account.',
   },
   pl: {
     langName: 'Polski',
     otherLang: 'English',
     updated: 'Ostatnia aktualizacja',
-    footer: `© 2026 ${OWNER} · vonmi`,
-    homeTitle: 'vonmi',
-    homeLead: 'Małe, spokojne aplikacje, które szanują Twój czas i Twoje dane.',
-    apps: 'Aplikacje',
-    spendioTag: 'Śledzenie wydatków: proste od pierwszego dnia, szczegółowe, kiedy tego potrzebujesz.',
+    footer: `© 2026 ${OWNER}`,
+    homeDescription: 'Niezależny twórca aplikacji mobilnych: tworzę własne aplikacje na iOS i Androida i buduję je na zlecenie.',
+    heroSr: 'Projektuję, buduję, wydaję i rozwijam aplikacje mobilne.',
+    heroHtml: '<span class="rot" data-words="Projektuję|Buduję|Wydaję|Rozwijam">Projektuję</span> aplikacje mobilne.',
+    homeLead: 'Tworzę własne aplikacje na iOS i Androida. Mogę zbudować też Twoją.',
+    seeApps: 'Moje aplikacje',
+    workWithMe: 'Współpraca',
+    apps: 'Moje aplikacje',
+    workTitle: 'Aplikacja na zlecenie',
+    workText:
+      'Masz pomysł na aplikację? Przeprowadzę ją od pierwszego szkicu, przez kod, po publikację w App Store i Google Play, tak samo jak moje własne.',
+    services: [
+      'Aplikacje na iOS i Androida we Flutterze',
+      'Projekt interfejsu',
+      'Konta, synchronizacja i backend w Firebase',
+      'Publikacja w App Store i Google Play',
+      'Subskrypcje i zakupy w aplikacji',
+      'Funkcje oparte na AI',
+    ],
+    messageLinkedIn: 'Napisz na LinkedInie',
+    messageInstagram: 'Napisz na Instagramie',
+    onStores: 'App Store · Google Play',
+    comingSoon: 'Wkrótce',
+    comingSoonStores: 'Wkrótce w App Store i Google Play.',
+    appStore: 'Pobierz z App Store',
+    googlePlay: 'Pobierz z Google Play',
     privacy: 'Polityka prywatności',
     terms: 'Regulamin',
     deleteAccount: 'Usuwanie konta',
     support: 'Pomoc',
     supportText: `Pytania, problemy lub uwagi: ${mail}`,
-    spendioIntro:
-      'Spendio pomaga zapisywać wydatki i przychody, ustawiać budżety i sprawdzać, na co idą pieniądze. Dane synchronizują się między iPhone’em, iPadem i urządzeniami z Androidem dzięki Twojemu kontu.',
   },
 };
+
+// ---------------------------------------------------------------- apps
+// Each app gets a card on the home page and a page at /<slug>/.
+// docs: 'local' = legal pages generated on this site (Spendio);
+//       otherwise links to where the app's documents already live.
+
+export const APPS = [
+  {
+    slug: 'seansownik',
+    name: { en: 'Seenit', pl: 'Seansownik' },
+    icon: 'assets/apps/seansownik.png',
+    stores: {
+      appStore: 'https://apps.apple.com/app/id6824915682',
+      googlePlay: 'https://play.google.com/store/apps/details?id=app.vonmi.seansownik',
+    },
+    tag: {
+      en: 'Track TV shows, movies and premieres.',
+      pl: 'Śledź seriale, filmy i premiery.',
+    },
+    intro: {
+      en: 'Seenit (Polish name: Seansownik) is a simple way to remember what you have watched, what you are watching now and what you want to see next.',
+      pl: 'Seansownik to prosty sposób, żeby zapamiętać, co już obejrzałeś, co oglądasz teraz i co chcesz zobaczyć.',
+    },
+    features: {
+      en: [
+        ['Movie and TV library', 'Add titles as Planned, Watching, Up to date, Completed or Dropped.'],
+        ['Episode progress', 'Tick off episodes one by one or a whole season at once and see what is next.'],
+        ['Premiere calendar', 'Upcoming episodes and releases from your library, with optional reminders.'],
+        ['Ratings and stats', 'Rate from 0 to 10, see your watch time, favourite genres and your year in numbers.'],
+        ['Where to watch', 'Check which streaming services offer a title in your country.'],
+        ['In sync and private', 'Syncs across your devices, works offline, no ads.'],
+      ],
+      pl: [
+        ['Biblioteka filmów i seriali', 'Dodawaj tytuły jako Planowane, W trakcie, Na bieżąco, Ukończone albo Porzucone.'],
+        ['Postęp w serialach', 'Zaznaczaj odcinki pojedynczo albo całymi sezonami i zobacz, co dalej.'],
+        ['Kalendarz premier', 'Nadchodzące odcinki i premiery z Twojej biblioteki, z opcjonalnymi przypomnieniami.'],
+        ['Oceny i statystyki', 'Oceniaj od 0 do 10, sprawdzaj czas oglądania, ulubione gatunki i swój rok w liczbach.'],
+        ['Gdzie obejrzeć', 'Sprawdź, w których serwisach streamingowych tytuł jest dostępny w Twoim kraju.'],
+        ['Zsynchronizowany i prywatny', 'Synchronizacja między urządzeniami, działa bez internetu, bez reklam.'],
+      ],
+    },
+    note: {
+      en: 'Movie and TV data is provided by The Movie Database (TMDb). This app uses the TMDb API but is not endorsed or certified by TMDb.',
+      pl: 'Dane o filmach i serialach pochodzą z The Movie Database (TMDb). Aplikacja korzysta z API TMDb, ale nie jest przez TMDb popierana ani certyfikowana.',
+    },
+    docs: {
+      privacy: { en: 'https://seansownik-legal.web.app/?lang=en', pl: 'https://seansownik-legal.web.app/?lang=pl' },
+      deleteAccount: {
+        en: 'https://seansownik-legal.web.app/usuwanie-konta/?lang=en',
+        pl: 'https://seansownik-legal.web.app/usuwanie-konta/?lang=pl',
+      },
+    },
+  },
+  {
+    slug: 'spendio',
+    name: { en: 'Spendio', pl: 'Spendio' },
+    icon: null, // inline SVG, see spendioIcon in build.mjs
+    stores: null,
+    tag: {
+      en: 'Expense tracking that is simple on day one and detailed when you want it.',
+      pl: 'Śledzenie wydatków: proste od pierwszego dnia, szczegółowe, kiedy tego potrzebujesz.',
+    },
+    intro: {
+      en: 'Spendio helps you record expenses and income, set budgets and see where your money goes. Your data syncs between your iPhone, iPad and Android devices through your account.',
+      pl: 'Spendio pomaga zapisywać wydatki i przychody, ustawiać budżety i sprawdzać, na co idą pieniądze. Dane synchronizują się między iPhone’em, iPadem i urządzeniami z Androidem dzięki Twojemu kontu.',
+    },
+    features: null,
+    note: null,
+    docs: 'local',
+  },
+];
 
 // ---------------------------------------------------------------- privacy
 
