@@ -2,8 +2,8 @@
 // Every legal change: update UPDATED and keep EN and PL in sync.
 
 export const OWNER = 'Sebastian Lech';
-export const EMAIL = 'sebastianlech.mobile@gmail.com';
-export const UPDATED = { en: '22 November 2026', pl: '22 listopada 2026' };
+export const EMAIL = 'support@vonmi.app';
+export const UPDATED = { en: '24 November 2026', pl: '24 listopada 2026' };
 
 const mail = `<a href="mailto:${EMAIL}">${EMAIL}</a>`;
 
