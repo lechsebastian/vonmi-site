@@ -55,8 +55,14 @@ p, li { max-width: 68ch; }
 .nav-links a { color: var(--muted); text-decoration: none; }
 .nav-links a:hover { color: var(--fg); }
 .nav-icon { display: inline-grid; place-items: center; }
-.lang { font-family: var(--mono); font-size: .8rem; border: 1px solid var(--line); padding: 4px 10px; border-radius: 8px; }
-.lang:hover { border-color: var(--line-hover); }
+.lang-switch {
+  display: inline-flex; padding: 3px; gap: 2px; border: 1px solid var(--line); border-radius: 9px;
+  background: var(--surface); font-family: var(--mono); font-size: .78rem; font-weight: 600;
+}
+.lang-switch > * { padding: 4px 10px; border-radius: 6px; line-height: 1.2; }
+.lang-switch .on { background: var(--grad); color: #0A0C11; }
+.nav-links .lang-switch a { color: var(--muted); }
+.nav-links .lang-switch a:hover { color: var(--fg); background: var(--surface-2); }
 
 /* buttons */
 .actions { display: flex; flex-wrap: wrap; gap: 12px; }
