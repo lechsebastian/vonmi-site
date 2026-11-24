@@ -256,11 +256,13 @@ ${docs.map(([label, href]) => `  <li><a href="${href}">${label}<span aria-hidden
     }));
   }
 
-  // Link-in-bio page (/links) for Instagram: own minimal layout, one column.
+  // Link-in-bio page for Instagram: own minimal layout, one column.
+  // Polish is the default here (/links), English lives at /en/links.
   {
-    const file = `${p}links/index.html`;
-    const altFile = `${po}links/index.html`;
-    const url = `https://vonmi.app/${p}links/`;
+    const linksPath = (l) => (l === 'pl' ? 'links/' : 'en/links/');
+    const file = `${linksPath(lang)}index.html`;
+    const altFile = `${linksPath(other)}index.html`;
+    const url = `https://vonmi.app/${linksPath(lang)}`;
     const row = (href, icon, title, hint) =>
       `<a class="lt-row" href="${href}">${icon}<span>${title}${hint ? `<small>${hint}</small>` : ''}</span><span class="lt-chev" aria-hidden="true">→</span></a>`;
     const apps = APPS.map((app) => {
@@ -295,7 +297,7 @@ ${docs.map(([label, href]) => `  <li><a href="${href}">${label}<span aria-hidden
 <link rel="canonical" href="${url}">
 <link rel="icon" href="${rel(file, 'favicon.svg')}" type="image/svg+xml">
 <link rel="stylesheet" href="${rel(file, 'assets/style.css')}">
-<link rel="alternate" hreflang="${other}" href="https://vonmi.app/${po}links/">
+<link rel="alternate" hreflang="${other}" href="https://vonmi.app/${linksPath(other)}">
 </head>
 <body class="lt">
 <div class="lt-glow" aria-hidden="true"></div>
@@ -363,6 +365,14 @@ ${body}
     }));
   }
 }
+
+// Old address of the Polish links page, kept as a redirect.
+write('pl/links/index.html', `<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><title>vonmi · links</title>
+<meta name="robots" content="noindex"><link rel="canonical" href="https://vonmi.app/links/">
+<meta http-equiv="refresh" content="0; url=../../links/"></head>
+<body><a href="../../links/">vonmi.app/links</a></body></html>
+`);
 
 // 404 (bilingual, absolute links: served from any path)
 write('404.html', `<!doctype html>
