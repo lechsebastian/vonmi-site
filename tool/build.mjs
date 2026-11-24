@@ -83,15 +83,9 @@ function layout({ lang, file, title, description, body, altFile }) {
     <a class="nav-text" href="${anchor('apps')}">${t.navApps}</a>
     <a class="nav-text" href="${anchor('work')}">${t.navWork}</a>
     ${SOCIAL.map((s) => `<a class="nav-icon" href="${s.url}" ${ext} aria-label="${s.name}">${ICONS[s.type]}</a>`).join('\n    ')}
-    <div class="lang-switch" role="group" aria-label="Language / Język">
-      ${['pl', 'en']
-        .map((l) =>
-          l === lang
-            ? `<span class="on" aria-current="true">${l.toUpperCase()}</span>`
-            : `<a href="${rel(file, altFile.replace(/index\.html$/, ''))}" hreflang="${l}" lang="${l}">${l.toUpperCase()}</a>`,
-        )
-        .join('')}
-    </div>
+    <a class="lang-switch" href="${rel(file, altFile.replace(/index\.html$/, ''))}" hreflang="${other}" aria-label="${other === 'en' ? 'Switch to English' : 'Przełącz na polski'}">${['pl', 'en']
+      .map((l) => `<span${l === lang ? ' class="on"' : ''}>${l.toUpperCase()}</span>`)
+      .join('')}</a>
   </nav>
 </div></header>
 <main>

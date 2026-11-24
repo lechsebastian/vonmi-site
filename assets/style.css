@@ -59,10 +59,11 @@ p, li { max-width: 68ch; }
   display: inline-flex; padding: 3px; gap: 2px; border: 1px solid var(--line); border-radius: 9px;
   background: var(--surface); font-family: var(--mono); font-size: .78rem; font-weight: 600;
 }
-.lang-switch > * { padding: 4px 10px; border-radius: 6px; line-height: 1.2; }
+.lang-switch span { padding: 4px 10px; border-radius: 6px; line-height: 1.2; transition: color .15s; }
 .lang-switch .on { background: var(--grad); color: #0A0C11; }
-.nav-links .lang-switch a { color: var(--muted); }
-.nav-links .lang-switch a:hover { color: var(--fg); background: var(--surface-2); }
+.nav-links .lang-switch { color: var(--muted); cursor: pointer; }
+.nav-links .lang-switch:hover { border-color: var(--line-hover); }
+.nav-links .lang-switch:hover span:not(.on) { color: var(--fg); }
 
 /* buttons */
 .actions { display: flex; flex-wrap: wrap; gap: 12px; }
