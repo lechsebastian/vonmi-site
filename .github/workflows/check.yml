@@ -1,3 +1,4 @@
+# Fails when the committed HTML is out of date or a link, image or store page is broken.
 name: Check site
 
 on:
