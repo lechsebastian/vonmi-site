@@ -116,8 +116,7 @@ export const T = {
 
 // ---------------------------------------------------------------- apps
 // Each app gets a card on the home page and a page at /<slug>/.
-// docs: 'local' = legal pages generated on this site (Spendio);
-//       otherwise links to where the app's documents already live.
+// Its legal pages are defined in LEGAL at the bottom of this file.
 
 export const APPS = [
   {
@@ -165,13 +164,6 @@ export const APPS = [
       en: 'Movie and TV data is provided by The Movie Database (TMDb). This app uses the TMDb API but is not endorsed or certified by TMDb.',
       pl: 'Dane o filmach i serialach pochodzą z The Movie Database (TMDb). Aplikacja korzysta z API TMDb, ale nie jest przez TMDb popierana ani certyfikowana.',
     },
-    docs: {
-      privacy: { en: 'https://seansownik-legal.web.app/?lang=en', pl: 'https://seansownik-legal.web.app/?lang=pl' },
-      deleteAccount: {
-        en: 'https://seansownik-legal.web.app/usuwanie-konta/?lang=en',
-        pl: 'https://seansownik-legal.web.app/usuwanie-konta/?lang=pl',
-      },
-    },
   },
   {
     slug: 'spendio',
@@ -194,7 +186,6 @@ export const APPS = [
     },
     features: null,
     note: null,
-    docs: 'local',
   },
 ];
 
@@ -332,7 +323,7 @@ export const terms = {
 <p class="lead">These terms apply to the Spendio app. By using Spendio you accept them. They are written to be short and readable.</p>
 
 <h2>1. The app</h2>
-<p>Spendio is an app for recording expenses and income, managing categories and budgets and viewing summaries. It is provided by ${OWNER} (“we”). Contact: ${mail}.</p>
+<p>Spendio is an app for recording expenses and income, managing categories and budgets and viewing summaries. It is made by ${OWNER}. If you have any questions, write to ${mail}.</p>
 
 <h2>2. Your account</h2>
 <p>You need an Apple or Google account to sign in. You are responsible for keeping access to that account secure. You can delete your Spendio account at any time in the app.</p>
@@ -365,7 +356,7 @@ export const terms = {
 <p class="lead">Ten regulamin dotyczy aplikacji Spendio. Korzystając ze Spendio, akceptujesz go. Staraliśmy się, żeby był krótki i zrozumiały.</p>
 
 <h2>1. Aplikacja</h2>
-<p>Spendio to aplikacja do zapisywania wydatków i przychodów, zarządzania kategoriami i budżetami oraz przeglądania podsumowań. Dostarcza ją ${OWNER} („my”). Kontakt: ${mail}.</p>
+<p>Spendio to aplikacja do zapisywania wydatków i przychodów, zarządzania kategoriami i budżetami oraz przeglądania podsumowań. Twórcą aplikacji jest ${OWNER}. Jeśli masz pytania, napisz na ${mail}.</p>
 
 <h2>2. Twoje konto</h2>
 <p>Do logowania potrzebujesz konta Apple lub Google. Odpowiadasz za bezpieczeństwo dostępu do tego konta. Konto Spendio możesz w każdej chwili usunąć w aplikacji.</p>
@@ -457,4 +448,176 @@ export const deleteAccount = {
 </ul>
 <p>Odinstalowanie aplikacji nie usuwa konta. Aktywne subskrypcje kupione w App Store lub Google Play trzeba anulować w ustawieniach konta w sklepie.</p>
 `,
+};
+
+// ---------------------------------------------------------------- seansownik: privacy
+
+const seansownikPrivacy = {
+  en: `
+<h2>1. Data controller</h2>
+<p>The controller of personal data collected in the Seenit app (Polish name: Seansownik) is ${OWNER}, contact: ${mail}.</p>
+
+<h2>2. What data we collect</h2>
+<p>Seenit requires an account so that it can save your movie and TV show library and sync it across your devices. For this purpose we process:</p>
+<ul>
+  <li><strong>Account data</strong> — when you sign up with email: your email address and password (we never receive your password in plain text — it is handled directly by Google’s Firebase Authentication). When you sign in with Google: the email address, name and profile picture shared by your Google account. When you sign in with Apple (iPhone, iPad): the email address shared by Apple — if you choose “Hide My Email”, this is a random relay address from Apple, not your real one.</li>
+  <li><strong>Username</strong> — every account has a unique username. By default we create it from the part of your email address before the “@” sign (never the whole address) and you can change it in Settings, at most once every 3 days. We also store the date of your last username change. Currently only you can see your username; if features are added in the future where it becomes visible to others, we will tell you in advance.</li>
+  <li><strong>Library data</strong> — the movies/TV shows you add to your library, the status you assign (Planned/Watching/Up to date/Completed/Dropped), ratings, your watch progress (watched seasons/episodes together with the dates you watched them, which we use for your statistics, such as your year in review) and whether you muted notifications for a title.</li>
+  <li><strong>Basic account usage data</strong> — with your account we store the date it was created, the day you last used the app (the date only, without the time), the platform (Android, iOS or browser), the app language and the app version. We also store the days on which you used the app (dates only, without the time) and, in the Android and iOS apps, a list of devices used with your account: a random app installation identifier (not a phone identifier or an advertising identifier; reinstalling the app creates a new one), the platform, the app version, the date the device was added and the day it was last used. A device entry is deleted when you sign out on that device. This data is used solely for aggregate statistics, such as the number of active accounts per day and the number of devices with the app. We do not record which screens you open or what you tap.</li>
+  <li><strong>Feedback</strong> — if you send a message through the “Feedback” form, we store its type (bug, idea, other), content, date and status, together with the app version, platform, language and the app screen you chose the message is about. The message is linked to your account so you can see its status. We keep it until you delete your account.</li>
+  <li><strong>Crash reports (Android and iOS app only)</strong> — when an error occurs in the app, a technical report is sent: where in the code the error happened, device model, OS and app version, memory state and a random installation identifier. The report does not include your email address, account data or library. Reports are handled by Firebase Crashlytics and kept for about 90 days. You can turn them off at any time in the app’s Settings (“Send crash reports”).</li>
+  <li><strong>Technical data stored only locally on your device</strong> — a cache of search results and title details (so the app runs faster and works offline) and app settings (e.g. theme, language, notification settings). We do not collect this data or send it to any servers outside your device. Premiere notifications, if you turn them on, are scheduled locally on your device based on your library; no external notification service is involved.</li>
+</ul>
+<p>The app currently contains no ads and no third-party analytics or tracking tools, and does not collect behavioral data for marketing purposes. Crash reports are used solely to detect and fix bugs. From the data in the database we keep only our own aggregate statistics: the number of accounts, the number of active accounts, the split by platform and language, and the number of library entries by status.</p>
+
+<h2>3. Purpose and legal basis of processing</h2>
+<p>We process data to provide the service — to create and maintain your account and to save and sync your library across devices. The legal basis is that processing is necessary to perform the contract for providing an electronic service (Art. 6(1)(b) GDPR) and, when you sign in with Google or Apple, also your consent given by choosing that sign-in method (Art. 6(1)(a) GDPR). Crash reports are processed on the basis of our legitimate interest in keeping the app stable (Art. 6(1)(f) GDPR); you can object by turning crash reports off in Settings. On the same basis we process basic account usage data and keep aggregate statistics — our legitimate interest is knowing how many people use the app and on which platforms.</p>
+
+<h2>4. Who we share data with</h2>
+<p>To run the app we use external service providers that process data on our behalf or at our request:</p>
+<ul>
+  <li><strong>Google Firebase</strong> (Google Ireland Limited / Google LLC) — authentication (Firebase Authentication), storage of account and library data (Cloud Firestore, region europe-central2, Warsaw), crash reports (Firebase Crashlytics) and checking that connections to the database come from the genuine app (Firebase App Check with Google Play Integrity on Android, Apple’s App Attest and DeviceCheck on iPhone and iPad, and reCAPTCHA in the browser) — to protect against abuse.</li>
+  <li><strong>The Movie Database (TMDb)</strong> — the source of movie/TV show metadata (titles, descriptions, posters, release dates). Search queries sent to TMDb are not linked to your account or any other personal data — they are ordinary requests for publicly available information about titles.</li>
+</ul>
+<p>We do not sell your data or share it with third parties for marketing purposes.</p>
+
+<h2>5. Transfers outside the European Economic Area</h2>
+<p>Google’s infrastructure (Firebase) may in some cases process data on servers outside the EEA — this is done on the basis of compliance mechanisms recognized by the GDPR, including the standard contractual clauses used by Google.</p>
+
+<h2>6. Data retention</h2>
+<p>We keep your data for as long as your account exists. You can delete your account together with all related data at any time, on your own, in the app (Settings → Delete account → Delete account permanently) — deletion is permanent and immediate. Exception: after you change your username or delete your account, the previous username stays reserved for 14 days so that nobody can immediately impersonate you. The reservation record contains only the username itself, a technical account identifier and the release date; it remains until someone else takes the name. After account deletion two technical records without personal data other than the account identifier also remain: the date of the last username change and the counter of feedback messages sent. See also <a href="{{deleteUrl}}">how to delete your account</a>.</p>
+
+<h2>7. Your rights</h2>
+<p>Under the GDPR you have the right to access your data, rectify it, erase it, restrict its processing, port it and object to its processing. You can exercise most of these rights yourself in the app (editing/deleting library entries, deleting your account). For anything else, write to the address given in the “Contact” section. You also have the right to lodge a complaint with a supervisory authority — in Poland, the President of the Personal Data Protection Office (UODO).</p>
+
+<h2>8. Data security</h2>
+<p>Access to library data in the Firestore database is restricted by security rules to the account owner only — no other user of the app can access it. Passwords of accounts created with email are handled entirely by Firebase Authentication and are never stored by us in plain text.</p>
+
+<h2>9. Children</h2>
+<p>The app is not directed at children under 16, and we do not knowingly collect personal data from them.</p>
+
+<h2>10. Changes to this privacy policy</h2>
+<p>This policy may be updated as the app evolves. The date of the last update is always shown at the top of this page.</p>
+
+<h2>11. Contact</h2>
+<p>${OWNER}, ${mail}</p>
+`,
+  pl: `
+<h2>1. Administrator danych</h2>
+<p>Administratorem danych osobowych zbieranych w aplikacji Seansownik (w wersji angielskiej: Seenit) jest ${OWNER}, kontakt: ${mail}.</p>
+
+<h2>2. Jakie dane zbieramy</h2>
+<p>Seansownik wymaga założenia konta, żeby zapisywać i synchronizować Twoją bibliotekę filmów i seriali między urządzeniami. W związku z tym przetwarzamy:</p>
+<ul>
+  <li><strong>Dane konta</strong> — przy rejestracji e-mailem: adres e-mail i hasło (hasło nigdy nie trafia do nas w formie jawnej — obsługuje je bezpośrednio Firebase Authentication firmy Google). Przy logowaniu przez Google: adres e-mail, imię i zdjęcie profilowe udostępnione przez Twoje konto Google. Przy logowaniu przez Apple (iPhone, iPad): adres e-mail udostępniony przez Apple — jeśli wybierzesz „Ukryj mój adres e-mail”, będzie to losowy adres przekazujący od Apple, a nie Twój prawdziwy.</li>
+  <li><strong>Nazwa użytkownika</strong> — każde konto ma unikalną nazwę. Domyślnie tworzymy ją z części Twojego adresu e-mail przed znakiem „@” (nigdy z całego adresu) i możesz ją zmienić w Ustawieniach, najwyżej raz na 3 dni. Zapisujemy też datę ostatniej zmiany nazwy. Obecnie nazwę widzisz tylko Ty; jeśli w przyszłości pojawią się funkcje, w których będzie widoczna dla innych, poinformujemy o tym wcześniej.</li>
+  <li><strong>Dane biblioteki</strong> — tytuły filmów/seriali dodane do biblioteki, nadany status (Planowane/W trakcie/Na bieżąco/Ukończono/Porzucone), oceny, postęp oglądania (obejrzane sezony/odcinki wraz z datami obejrzeń, z których liczymy Twoje statystyki, np. podsumowanie roku) oraz informacja, czy wyciszyłeś/-aś powiadomienia o danym tytule.</li>
+  <li><strong>Podstawowe dane o korzystaniu z konta</strong> — przy koncie zapisujemy datę jego założenia, dzień ostatniego użycia aplikacji (sama data, bez godziny), platformę (Android, iOS lub przeglądarka), język aplikacji i jej wersję. Zapisujemy też dni korzystania z aplikacji (same daty, bez godzin), a w aplikacji na Androida i iOS listę urządzeń używanych z kontem: losowy identyfikator instalacji aplikacji (nie jest to identyfikator telefonu ani identyfikator reklamowy; po ponownej instalacji aplikacji powstaje nowy), platformę, wersję aplikacji, datę dodania urządzenia i dzień jego ostatniego użycia. Wpis urządzenia usuwamy, gdy wylogujesz się na tym urządzeniu. Te dane służą wyłącznie do zbiorczych statystyk, np. liczby aktywnych kont w poszczególnych dniach i liczby urządzeń z aplikacją. Nie zapisujemy, które ekrany otwierasz ani co klikasz.</li>
+  <li><strong>Opinie i zgłoszenia</strong> — jeśli wyślesz zgłoszenie przez formularz „Opinie i zgłoszenia”, zapisujemy jego rodzaj (błąd, pomysł, inne), treść, datę i status, a także wersję aplikacji, platformę, język oraz wybrany ekran aplikacji, którego dotyczy zgłoszenie. Zgłoszenie jest powiązane z Twoim kontem, dzięki czemu jego status widać w aplikacji. Przechowujemy je do czasu usunięcia konta.</li>
+  <li><strong>Raporty o błędach (tylko aplikacja na Androida i iOS)</strong> — gdy w aplikacji wystąpi błąd, wysyłany jest raport techniczny: miejsce błędu w kodzie, model urządzenia, wersja systemu i aplikacji, stan pamięci oraz losowy identyfikator instalacji. Raport nie zawiera Twojego adresu e-mail, danych konta ani biblioteki. Raporty obsługuje Firebase Crashlytics i są przechowywane przez ok. 90 dni. Wysyłanie raportów możesz w każdej chwili wyłączyć w Ustawieniach aplikacji („Wysyłaj raporty o błędach”).</li>
+  <li><strong>Dane techniczne przechowywane wyłącznie lokalnie na Twoim urządzeniu</strong> — podręczny cache wyników wyszukiwania i szczegółów tytułów (żeby aplikacja działała szybciej i offline) oraz ustawienia aplikacji (np. motyw, język, ustawienia powiadomień). Te dane nie są przez nas zbierane ani wysyłane na żadne serwery poza Twoim urządzeniem. Powiadomienia o premierach, jeśli je włączysz, są planowane lokalnie na Twoim urządzeniu na podstawie Twojej biblioteki; nie korzystamy przy tym z zewnętrznej usługi powiadomień.</li>
+</ul>
+<p>Aplikacja nie zawiera obecnie reklam ani zewnętrznych narzędzi analitycznych/śledzących i nie zbiera danych o zachowaniu w celach marketingowych. Raporty o błędach służą wyłącznie do wykrywania i naprawiania usterek. Na podstawie danych z bazy prowadzimy wyłącznie własne, zbiorcze statystyki: liczbę kont, liczbę aktywnych kont, podział na platformy i języki oraz liczbę wpisów w bibliotekach w podziale na statusy.</p>
+
+<h2>3. Cel i podstawa prawna przetwarzania</h2>
+<p>Dane przetwarzamy w celu świadczenia usługi — założenia i utrzymania konta oraz zapisywania i synchronizowania Twojej biblioteki między urządzeniami. Podstawą prawną jest niezbędność przetwarzania do wykonania umowy o świadczenie usługi drogą elektroniczną (art. 6 ust. 1 lit. b RODO), a przy logowaniu przez Google lub Apple — również Twoja zgoda wyrażona przy wyborze tej metody logowania (art. 6 ust. 1 lit. a RODO). Raporty o błędach przetwarzamy na podstawie naszego prawnie uzasadnionego interesu, jakim jest zapewnienie stabilnego działania aplikacji (art. 6 ust. 1 lit. f RODO); możesz się temu sprzeciwić, wyłączając raporty w Ustawieniach. Na tej samej podstawie przetwarzamy podstawowe dane o korzystaniu z konta i prowadzimy zbiorcze statystyki — naszym uzasadnionym interesem jest wiedza o tym, ile osób korzysta z aplikacji i na jakich platformach.</p>
+
+<h2>4. Komu przekazujemy dane</h2>
+<p>Do działania aplikacji korzystamy z zewnętrznych dostawców usług, którzy przetwarzają dane w naszym imieniu lub na nasze zlecenie:</p>
+<ul>
+  <li><strong>Google Firebase</strong> (Google Ireland Limited / Google LLC) — uwierzytelnianie (Firebase Authentication), przechowywanie danych konta i biblioteki (Cloud Firestore, region europe-central2, Warszawa), raporty o błędach (Firebase Crashlytics) oraz sprawdzanie, czy połączenia z bazą pochodzą z oryginalnej aplikacji (Firebase App Check z usługą Google Play Integrity na Androidzie, App Attest i DeviceCheck firmy Apple na iPhonie i iPadzie oraz reCAPTCHA w przeglądarce) — w celu ochrony przed nadużyciami.</li>
+  <li><strong>The Movie Database (TMDb)</strong> — źródło metadanych filmów/seriali (tytuły, opisy, plakaty, daty premier). Zapytania wyszukiwania wysyłane do TMDb nie są powiązane z Twoim kontem ani innymi danymi osobowymi — to zwykłe zapytania o publicznie dostępne informacje o tytułach.</li>
+</ul>
+<p>Nie sprzedajemy ani nie udostępniamy Twoich danych podmiotom trzecim w celach marketingowych.</p>
+
+<h2>5. Przekazywanie danych poza Europejski Obszar Gospodarczy</h2>
+<p>Infrastruktura Google (Firebase) może w niektórych przypadkach przetwarzać dane na serwerach poza EOG — odbywa się to w oparciu o mechanizmy zgodności uznane przez RODO, w tym standardowe klauzule umowne stosowane przez Google.</p>
+
+<h2>6. Okres przechowywania danych</h2>
+<p>Dane przechowujemy przez cały czas istnienia Twojego konta. Możesz w każdej chwili samodzielnie usunąć konto wraz ze wszystkimi powiązanymi danymi z poziomu aplikacji (Ustawienia → Usuwanie konta → Usuń konto na stałe) — usunięcie jest trwałe i natychmiastowe. Wyjątek: po zmianie nazwy użytkownika lub usunięciu konta poprzednia nazwa pozostaje zarezerwowana przez 14 dni, żeby nikt nie mógł od razu się pod nią podszyć. Zapis tej rezerwacji zawiera wyłącznie samą nazwę, techniczny identyfikator konta i datę zwolnienia; pozostaje do czasu, aż nazwę zajmie inna osoba. Po usunięciu konta zostają też dwa zapisy techniczne bez danych osobowych poza identyfikatorem konta: data ostatniej zmiany nazwy i licznik wysłanych zgłoszeń. Zobacz też, <a href="{{deleteUrl}}">jak usunąć konto</a>.</p>
+
+<h2>7. Twoje prawa</h2>
+<p>Zgodnie z RODO przysługuje Ci prawo do: dostępu do swoich danych, ich sprostowania, usunięcia, ograniczenia przetwarzania, przenoszenia danych oraz sprzeciwu wobec przetwarzania. Większość z tych praw możesz zrealizować samodzielnie w aplikacji (edycja/usunięcie wpisów biblioteki, usunięcie konta). W pozostałych sprawach napisz na adres podany w sekcji „Kontakt”. Przysługuje Ci również prawo wniesienia skargi do Prezesa Urzędu Ochrony Danych Osobowych (UODO).</p>
+
+<h2>8. Bezpieczeństwo danych</h2>
+<p>Dostęp do danych biblioteki w bazie Firestore jest ograniczony regułami bezpieczeństwa wyłącznie do właściciela konta — żaden inny użytkownik aplikacji nie ma do nich dostępu. Hasła kont zakładanych e-mailem są w całości obsługiwane przez Firebase Authentication i nigdy nie są przechowywane przez nas w postaci jawnej.</p>
+
+<h2>9. Dzieci</h2>
+<p>Aplikacja nie jest kierowana do dzieci poniżej 16. roku życia i nie zbieramy świadomie danych osobowych takich osób.</p>
+
+<h2>10. Zmiany polityki prywatności</h2>
+<p>Ta polityka może być aktualizowana wraz z rozwojem aplikacji. Data ostatniej aktualizacji jest zawsze widoczna na górze tej strony.</p>
+
+<h2>11. Kontakt</h2>
+<p>${OWNER}, ${mail}</p>
+`,
+};
+
+// ---------------------------------------------------------------- seansownik: delete account
+
+const seansownikDelete = {
+  en: `
+<h2>1. Deleting in the app (recommended)</h2>
+<p>If you have the app installed and can access your account, you can delete it yourself in a few steps:</p>
+<ol>
+  <li>Open Seenit and sign in to your account.</li>
+  <li>Open the menu (the ☰ icon in the top-left corner) and choose <strong>Settings</strong>.</li>
+  <li>Choose <strong>Account</strong>, scroll down to the <strong>Delete account</strong> section and tap <strong>Delete account permanently</strong>.</li>
+  <li>In the confirmation field, type exactly <strong>DELETE</strong> (in the Polish version of the app: <strong>USUŃ</strong>), enter your account password and confirm. If you sign in with Google, the app will ask you to choose your Google account again instead.</li>
+</ol>
+<p>Your account and all data associated with it (library, statuses, ratings, watch progress) are deleted <strong>immediately and permanently</strong> — this cannot be undone.</p>
+
+<h2>2. Deleting without access to the app</h2>
+<p>If you no longer have access to the app (e.g. you uninstalled it, changed devices or forgot your password), email us from the address associated with your account: <a href="mailto:${EMAIL}?subject=Seenit%20account%20deletion">${EMAIL}</a>.</p>
+<p>In your message, include the email address your account is registered with and say that you want it deleted. We will process your request within 30 days at the latest and confirm the deletion by email.</p>
+
+<h2>3. What data is deleted</h2>
+<ul>
+  <li>Your account (email address, sign-in data — including the link to your Google account, if you used it).</li>
+  <li>Your entire library: saved movies/TV shows, statuses, ratings and watch progress (watched seasons/episodes).</li>
+  <li>Messages sent through the “Feedback” form.</li>
+  <li>Account data used for aggregate statistics (creation date, day of last use, platform, app language and version) and the username assigned to your account. The username itself stays reserved for 14 days so that nobody can immediately impersonate you — see the Privacy Policy for details.</li>
+</ul>
+<p>A full description of the data we process and on what basis can be found in our <a href="{{privacyUrl}}">Privacy Policy</a>.</p>
+`,
+  pl: `
+<h2>1. Usuwanie w aplikacji (zalecane)</h2>
+<p>Jeśli masz zainstalowaną aplikację i dostęp do swojego konta, możesz usunąć je samodzielnie w kilku krokach:</p>
+<ol>
+  <li>Otwórz Seansownik i zaloguj się na swoje konto.</li>
+  <li>Otwórz menu (ikona ☰ w lewym górnym rogu) i wybierz <strong>Ustawienia</strong>.</li>
+  <li>Wybierz <strong>Konto</strong>, zjedź do sekcji <strong>Usuwanie konta</strong> i naciśnij <strong>Usuń konto na stałe</strong>.</li>
+  <li>W polu potwierdzenia wpisz dokładnie słowo <strong>USUŃ</strong> (w angielskiej wersji aplikacji: <strong>DELETE</strong>), podaj hasło do konta i potwierdź. Jeśli logujesz się przez Google, zamiast hasła aplikacja poprosi o ponowne wybranie konta Google.</li>
+</ol>
+<p>Konto oraz wszystkie powiązane z nim dane (biblioteka, statusy, oceny, postęp oglądania) zostają usunięte <strong>natychmiast i trwale</strong> — tej operacji nie da się cofnąć.</p>
+
+<h2>2. Usuwanie bez dostępu do aplikacji</h2>
+<p>Jeśli nie masz już dostępu do aplikacji (np. ją odinstalowałeś/-aś, zmieniłeś/-aś urządzenie lub zapomniałeś/-aś hasła), napisz do nas z adresu e-mail powiązanego z kontem: <a href="mailto:${EMAIL}?subject=Usuni%C4%99cie%20konta%20Seansownik">${EMAIL}</a>.</p>
+<p>Podaj w wiadomości adres e-mail, na który zarejestrowane jest konto, i napisz, że chcesz je usunąć. Prośbę zrealizujemy najpóźniej w ciągu 30 dni i potwierdzimy usunięcie odpowiedzią e-mail.</p>
+
+<h2>3. Jakie dane są usuwane</h2>
+<ul>
+  <li>Konto (adres e-mail, dane logowania — w tym powiązanie z kontem Google, jeśli było używane).</li>
+  <li>Cała biblioteka: zapisane filmy/seriale, statusy, oceny, postęp oglądania (obejrzane sezony/odcinki).</li>
+  <li>Zgłoszenia wysłane przez formularz „Opinie i zgłoszenia”.</li>
+  <li>Dane konta używane do zbiorczych statystyk (data założenia, dzień ostatniego użycia, platforma, język i wersja aplikacji) oraz nazwa użytkownika przypisana do konta. Sama nazwa pozostaje zarezerwowana przez 14 dni, żeby nikt nie mógł od razu się pod nią podszyć — szczegóły w polityce prywatności.</li>
+</ul>
+<p>Pełny opis danych, które przetwarzamy, i na jakiej podstawie, znajduje się w <a href="{{privacyUrl}}">polityce prywatności</a>.</p>
+`,
+};
+
+// ---------------------------------------------------------------- legal pages per app
+// Generated at /<slug>/<doc>/ (and /en/...). Order = order of links on the app page.
+// {{privacyUrl}} and {{deleteUrl}} in the HTML point to the same app's pages.
+
+export const LEGAL = {
+  seansownik: [
+    { slug: 'privacy', key: 'privacy', updated: { en: '23 November 2026', pl: '23 listopada 2026' }, html: seansownikPrivacy },
+    { slug: 'delete-account', key: 'deleteAccount', updated: { en: '19 October 2026', pl: '19 października 2026' }, html: seansownikDelete },
+  ],
+  spendio: [
+    { slug: 'privacy', key: 'privacy', updated: UPDATED, html: privacy },
+    { slug: 'terms', key: 'terms', updated: UPDATED, html: terms },
+    { slug: 'delete-account', key: 'deleteAccount', updated: UPDATED, html: deleteAccount },
+  ],
 };

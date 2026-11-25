@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { T, UPDATED, EMAIL, SOCIAL, APPS, privacy, terms, deleteAccount } from './content.mjs';
+import { T, EMAIL, SOCIAL, APPS, LEGAL } from './content.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 // Polish is the default language (site root); English lives under /en/.
@@ -214,14 +214,7 @@ for (const lang of LANGS) {
   // App pages
   for (const app of APPS) {
     const file = `${p}${app.slug}/index.html`;
-    const docs =
-      app.docs === 'local'
-        ? [
-            [t.privacy, rel(file, `${p}${app.slug}/privacy/`)],
-            [t.terms, rel(file, `${p}${app.slug}/terms/`)],
-            [t.deleteAccount, rel(file, `${p}${app.slug}/delete-account/`)],
-          ]
-        : Object.entries(app.docs).map(([key, url]) => [t[key], url[lang]]);
+    const docs = (LEGAL[app.slug] ?? []).map((d) => [t[d.key], rel(file, `${p}${app.slug}/${d.slug}/`)]);
     const stores = app.stores
       ? `<div class="actions">
   <a class="btn btn-primary" href="${app.stores.appStore}">${t.appStore}</a>
@@ -337,34 +330,34 @@ ${docs.map(([label, href]) => `  <li><a href="${href}">${label}<span aria-hidden
 `);
   }
 
-  // Legal pages (Spendio)
-  const docs = [
-    ['privacy', t.privacy, privacy[lang]],
-    ['terms', t.terms, terms[lang]],
-    ['delete-account', t.deleteAccount, deleteAccount[lang]],
-  ];
-  for (const [slug, title, html] of docs) {
-    const file = `${p}spendio/${slug}/index.html`;
-    const body = html
-      .replaceAll('{{deleteUrl}}', rel(file, `${p}spendio/delete-account/`))
-      .replaceAll('{{privacyUrl}}', rel(file, `${p}spendio/privacy/`));
-    const nav = docs
-      .filter(([s]) => s !== slug)
-      .map(([s, tt]) => `<a href="${rel(file, `${p}spendio/${s}/`)}">${tt}</a>`)
-      .join('');
-    write(file, layout({
-      lang, file, altFile: `${po}spendio/${slug}/index.html`, title: `${title} · Spendio`, description: `${title} · Spendio`,
-      body: `
+  // Legal pages per app
+  for (const app of APPS) {
+    const docs = LEGAL[app.slug] ?? [];
+    const name = app.name[lang];
+    for (const doc of docs) {
+      const file = `${p}${app.slug}/${doc.slug}/index.html`;
+      const title = t[doc.key];
+      const body = doc.html[lang]
+        .replaceAll('{{deleteUrl}}', rel(file, `${p}${app.slug}/delete-account/`))
+        .replaceAll('{{privacyUrl}}', rel(file, `${p}${app.slug}/privacy/`));
+      const nav = docs
+        .filter((d) => d !== doc)
+        .map((d) => `<a href="${rel(file, `${p}${app.slug}/${d.slug}/`)}">${t[d.key]}</a>`)
+        .join('');
+      write(file, layout({
+        lang, file, altFile: `${po}${app.slug}/${doc.slug}/index.html`, title: `${title} · ${name}`, description: `${title} · ${name}`,
+        body: `
 <div class="wrap narrow page">
-<a class="crumb crumb-app" href="${rel(file, `${p}spendio/`)}">${spendioIcon(28)}<span>Spendio</span></a>
+<a class="crumb crumb-app" href="${rel(file, `${p}${app.slug}/`)}">${appIcon(app, file, 28)}<span>${name}</span></a>
 <article class="doc">
 <h1>${title}</h1>
-<p class="updated">${t.updated}: ${UPDATED[lang]}</p>
+<p class="updated">${t.updated}: ${doc.updated[lang]}</p>
 ${body}
 </article>
 <nav class="doc-nav">${nav}</nav>
 </div>`,
-    }));
+      }));
+    }
   }
 }
 
