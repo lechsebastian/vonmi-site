@@ -90,6 +90,7 @@ function head({ lang, file, altFile, title, description, image, extra = '' }) {
 <meta property="og:image" content="${SITE}${image}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="${rel(file, 'favicon.svg')}" type="image/svg+xml">
 <link rel="icon" href="${rel(file, 'favicon.ico')}" sizes="48x48">
@@ -97,7 +98,7 @@ function head({ lang, file, altFile, title, description, image, extra = '' }) {
 <link rel="stylesheet" href="${rel(file, 'assets/style.css')}">${extra}`;
 }
 
-function layout({ lang, file, title, description, body, altFile, image = `assets/og/home-${lang}.png`, extra }) {
+function layout({ lang, file, title, description, body, altFile, image = `assets/og/home-${lang}.jpg`, extra }) {
   const t = T[lang];
   const p = prefix(lang);
   const other = lang === 'en' ? 'pl' : 'en';
@@ -275,7 +276,7 @@ for (const lang of LANGS) {
       alternateName: app.name[lang === 'pl' ? 'en' : 'pl'] !== app.name[lang] ? app.name[lang === 'pl' ? 'en' : 'pl'] : undefined,
       description: app.summary[lang],
       url: pageUrl(file),
-      image: `${SITE}assets/og/${app.slug}-${lang}.png`,
+      image: `${SITE}assets/og/${app.slug}-${lang}.jpg`,
       operatingSystem: 'iOS, Android',
       applicationCategory: app.category,
       inLanguage: ['pl', 'en'],
@@ -300,7 +301,7 @@ for (const lang of LANGS) {
       : '';
     write(file, layout({
       lang, file, altFile: `${po}${app.slug}/index.html`, title: `${app.name[lang]} · vonmi`, description: app.tag[lang],
-      image: `assets/og/${app.slug}-${lang}.png`, extra: `${banner}\n${structured}`,
+      image: `assets/og/${app.slug}-${lang}.jpg`, extra: `${banner}\n${structured}`,
       body: `
 <div class="wrap narrow page">
 <a class="crumb" href="${rel(file, p)}#apps">← ${t.back}</a>
@@ -347,7 +348,7 @@ ${docs.map(([label, href]) => `  <li><a href="${href}">${label}<span aria-hidden
     write(file, `<!doctype html>
 <html lang="${lang}">
 <head>
-${head({ lang, file, altFile, title: 'vonmi · links', description: t.linksBio, image: `assets/og/home-${lang}.png` })}
+${head({ lang, file, altFile, title: 'vonmi · links', description: t.linksBio, image: `assets/og/home-${lang}.jpg` })}
 </head>
 <body class="lt">
 <div class="lt-glow" aria-hidden="true"></div>
@@ -401,7 +402,7 @@ ${head({ lang, file, altFile, title: 'vonmi · links', description: t.linksBio, 
         .join('');
       write(file, layout({
         lang, file, altFile: `${po}${app.slug}/${doc.slug}/index.html`, title: `${title} · ${name}`, description: `${title} · ${name}`,
-        image: `assets/og/${app.slug}-${lang}.png`,
+        image: `assets/og/${app.slug}-${lang}.jpg`,
         body: `
 <div class="wrap narrow page">
 <a class="crumb crumb-app" href="${rel(file, `${p}${app.slug}/`)}">${appIcon(app, file, 28)}<span>${name}</span></a>

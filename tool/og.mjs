@@ -1,5 +1,5 @@
 // Renders share images (og:image) and PNG/ICO icons with headless Chrome.
-// Usage: node tool/og.mjs   → writes assets/og/*.png, apple-touch-icon.png, favicon.ico
+// Usage: node tool/og.mjs   → writes assets/og/*.jpg, apple-touch-icon.png, favicon.ico
 // Run it after changing app names, taglines or screenshots, then commit the images.
 import fs from 'node:fs';
 import os from 'node:os';
@@ -86,7 +86,7 @@ for (const lang of ['pl', 'en']) {
   <p>${t.homeLead}</p>
 </div>
 <div class="url">vonmi.app</div>
-${phones(showcase.screens)}`, 'home'), 1200, 630, path.join(root, `assets/og/home-${lang}.png`));
+${phones(showcase.screens)}`, 'home'), 1200, 630, path.join(root, `assets/og/home-${lang}.jpg`));
 
   for (const app of APPS) {
     const icon = app.icon ? `<img src="${asset(app.icon)}">` : spendioTile.replace(/width="260" height="260"/, '');
@@ -98,7 +98,7 @@ ${phones(showcase.screens)}`, 'home'), 1200, 630, path.join(root, `assets/og/hom
   <p style="font-size:24px">${app.stores ? 'App Store · Google Play' : t.comingSoonStores}</p>
 </div>
 <div class="url">vonmi.app/${lang === 'en' ? 'en/' : ''}${app.slug}</div>
-${art}`), 1200, 630, path.join(root, `assets/og/${app.slug}-${lang}.png`));
+${art}`), 1200, 630, path.join(root, `assets/og/${app.slug}-${lang}.jpg`));
   }
 }
 
