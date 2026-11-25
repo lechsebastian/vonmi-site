@@ -7,7 +7,10 @@ export const UPDATED = { en: '24 November 2026', pl: '24 listopada 2026' };
 
 const mail = `<a href="mailto:${EMAIL}">${EMAIL}</a>`;
 
-// Contact on the site goes through these profiles (no email outside support and legal pages).
+// Email for people who want an app built (home page contact section).
+export const WORK_EMAIL = 'sebastianlech.mobile@gmail.com';
+
+// Social profiles: header, footer and the contact section.
 export const SOCIAL = [
   { type: 'linkedin', name: 'LinkedIn', url: 'https://www.linkedin.com/in/sebastianlech/' },
   { type: 'instagram', name: 'Instagram', url: 'https://instagram.com/mobile.design.developer' },
@@ -35,7 +38,16 @@ export const T = {
       'Have an idea for an app? I can take it from the first sketch through code to release in the App Store and Google Play.',
     contactLabel: '// contact',
     contactTitle: 'Let’s talk about your app.',
-    contactText: 'Message me on LinkedIn or Instagram.',
+    contactText: 'Email me or message me on LinkedIn or Instagram.',
+    processLabel: '// process',
+    processTitle: 'How we work together',
+    process: [
+      ['Conversation', 'You tell me about your idea, who it is for and what it should achieve. I ask questions and suggest what makes sense for a first version.'],
+      ['Quote and plan', 'You get the scope, schedule and cost in writing, so you know what you are paying for before any work starts.'],
+      ['Design', 'I design the key screens. You see them before coding starts and we refine them together.'],
+      ['Build', 'I build the app in stages. You regularly get test versions to install on your own phone.'],
+      ['Release and growth', 'I publish the app in the App Store and Google Play and help with fixes and next versions.'],
+    ],
     more: 'More',
     back: 'All apps',
     available: 'available in stores',
@@ -84,7 +96,16 @@ export const T = {
       'Masz pomysł na aplikację? Przeprowadzę ją od pierwszego szkicu, przez kod, aż po publikację w App Store i Google Play.',
     contactLabel: '// kontakt',
     contactTitle: 'Porozmawiajmy o Twojej aplikacji.',
-    contactText: 'Napisz do mnie przez LinkedIn lub Instagram.',
+    contactText: 'Napisz maila albo wiadomość przez LinkedIn lub Instagram.',
+    processLabel: '// proces',
+    processTitle: 'Jak wygląda współpraca',
+    process: [
+      ['Rozmowa', 'Opowiadasz o pomyśle, dla kogo jest aplikacja i co ma osiągnąć. Dopytuję i podpowiadam, co ma sens w pierwszej wersji.'],
+      ['Wycena i plan', 'Dostajesz na piśmie zakres, harmonogram i koszt, więc przed startem wiesz, za co płacisz.'],
+      ['Projekt', 'Projektuję najważniejsze ekrany. Widzisz je przed rozpoczęciem programowania i razem je dopracowujemy.'],
+      ['Budowa', 'Buduję aplikację etapami. Regularnie dostajesz wersje testowe do zainstalowania na swoim telefonie.'],
+      ['Publikacja i rozwój', 'Publikuję aplikację w App Store i Google Play, a potem pomagam przy poprawkach i kolejnych wersjach.'],
+    ],
     more: 'Więcej',
     back: 'Wszystkie aplikacje',
     available: 'dostępna w sklepach',
@@ -123,6 +144,9 @@ export const APPS = [
     slug: 'seansownik',
     name: { en: 'Seenit', pl: 'Seansownik' },
     icon: 'assets/apps/seansownik.png',
+    appStoreId: '6824915682', // iOS Smart App Banner
+    category: 'EntertainmentApplication', // schema.org
+    free: true,
     stores: {
       appStore: 'https://apps.apple.com/app/id6824915682',
       googlePlay: 'https://play.google.com/store/apps/details?id=app.vonmi.seansownik',
@@ -169,6 +193,9 @@ export const APPS = [
     slug: 'spendio',
     name: { en: 'Spendio', pl: 'Spendio' },
     icon: null, // inline SVG, see spendioIcon in build.mjs
+    appStoreId: null,
+    category: 'FinanceApplication',
+    free: true,
     stores: null,
     tag: {
       en: 'Expense tracking that is simple on day one and detailed when you want it.',

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://vonmi.app/</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://vonmi.app/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vonmi.app/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vonmi.app/"/>
+  </url>
+  <url>
+    <loc>https://vonmi.app/en/</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://vonmi.app/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vonmi.app/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vonmi.app/"/>
+  </url>
+  <url>
+    <loc>https://vonmi.app/seansownik/</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://vonmi.app/seansownik/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vonmi.app/en/seansownik/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vonmi.app/seansownik/"/>
+  </url>
+  <url>
+    <loc>https://vonmi.app/en/seansownik/</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://vonmi.app/seansownik/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vonmi.app/en/seansownik/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vonmi.app/seansownik/"/>
+  </url>
+  <url>
+    <loc>https://vonmi.app/spendio/</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://vonmi.app/spendio/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vonmi.app/en/spendio/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vonmi.app/spendio/"/>
+  </url>
+  <url>
+    <loc>https://vonmi.app/en/spendio/</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://vonmi.app/spendio/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vonmi.app/en/spendio/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vonmi.app/spendio/"/>
+  </url>
+  <url>
+    <loc>https://vonmi.app/links/</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://vonmi.app/links/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vonmi.app/en/links/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vonmi.app/links/"/>
+  </url>
+  <url>
+    <loc>https://vonmi.app/en/links/</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://vonmi.app/links/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vonmi.app/en/links/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vonmi.app/links/"/>
+  </url>
+  <url>
+    <loc>https://vonmi.app/seansownik/privacy/</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://vonmi.app/seansownik/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vonmi.app/en/seansownik/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vonmi.app/seansownik/privacy/"/>
+  </url>
+  <url>
+    <loc>https://vonmi.app/en/seansownik/privacy/</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://vonmi.app/seansownik/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vonmi.app/en/seansownik/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vonmi.app/seansownik/privacy/"/>
+  </url>
+  <url>
+    <loc>https://vonmi.app/seansownik/delete-account/</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://vonmi.app/seansownik/delete-account/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vonmi.app/en/seansownik/delete-account/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vonmi.app/seansownik/delete-account/"/>
+  </url>
+  <url>
+    <loc>https://vonmi.app/en/seansownik/delete-account/</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://vonmi.app/seansownik/delete-account/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vonmi.app/en/seansownik/delete-account/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vonmi.app/seansownik/delete-account/"/>
+  </url>
+  <url>
+    <loc>https://vonmi.app/spendio/privacy/</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://vonmi.app/spendio/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vonmi.app/en/spendio/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vonmi.app/spendio/privacy/"/>
+  </url>
+  <url>
+    <loc>https://vonmi.app/en/spendio/privacy/</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://vonmi.app/spendio/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vonmi.app/en/spendio/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vonmi.app/spendio/privacy/"/>
+  </url>
+  <url>
+    <loc>https://vonmi.app/spendio/terms/</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://vonmi.app/spendio/terms/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vonmi.app/en/spendio/terms/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vonmi.app/spendio/terms/"/>
+  </url>
+  <url>
+    <loc>https://vonmi.app/en/spendio/terms/</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://vonmi.app/spendio/terms/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vonmi.app/en/spendio/terms/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vonmi.app/spendio/terms/"/>
+  </url>
+  <url>
+    <loc>https://vonmi.app/spendio/delete-account/</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://vonmi.app/spendio/delete-account/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vonmi.app/en/spendio/delete-account/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vonmi.app/spendio/delete-account/"/>
+  </url>
+  <url>
+    <loc>https://vonmi.app/en/spendio/delete-account/</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://vonmi.app/spendio/delete-account/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vonmi.app/en/spendio/delete-account/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vonmi.app/spendio/delete-account/"/>
+  </url>
+</urlset>

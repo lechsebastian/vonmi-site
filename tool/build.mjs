@@ -3,9 +3,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { T, EMAIL, SOCIAL, APPS, LEGAL } from './content.mjs';
+import { T, EMAIL, WORK_EMAIL, OWNER, SOCIAL, APPS, LEGAL } from './content.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const SITE = 'https://vonmi.app/';
+const LOCALE = { pl: 'pl_PL', en: 'en_US' };
+const pageUrl = (file) => SITE + file.replace(/index\.html$/, '');
+const sitemap = []; // [plFile, enFile] pairs of indexable pages
 // Polish is the default language (site root); English lives under /en/.
 const LANGS = ['pl', 'en'];
 const prefix = (lang) => (lang === 'pl' ? '' : 'en/');
@@ -34,6 +38,8 @@ const ICONS = {
   ),
 };
 
+const MAIL_ICON = svg('<rect x="2" y="4" width="20" height="16" rx="3"/><path d="m3 6 9 7 9-7"/>');
+
 // Relative link from one output file to a site path ('' = home, 'spendio/' ...).
 function rel(from, to) {
   const depth = from.split('/').length - 1;
@@ -51,30 +57,57 @@ const status = (app, t) =>
 
 const ext = 'target="_blank" rel="me noopener"';
 
-function layout({ lang, file, title, description, body, altFile }) {
+// Official store badges; both render 48px tall (the Google PNG has a transparent margin).
+const badges = (stores, t, file) => `<div class="badges">
+  <a class="badge" href="${stores.appStore}"><img src="${rel(file, 'assets/badges/app-store.svg')}" width="144" height="48" alt="${t.appStore}"></a>
+  <a class="badge badge-gp" href="${stores.googlePlay}"><img src="${rel(file, 'assets/badges/google-play.png')}" width="185" height="72" alt="${t.googlePlay}"></a>
+</div>`;
+
+const jsonLd = (data) =>
+  `<script type="application/ld+json">${JSON.stringify(data).replaceAll('</', '<\\/')}</script>`;
+
+// <head> tags shared by every indexable page: SEO, language versions, share preview, icons.
+function head({ lang, file, altFile, title, description, image, extra = '' }) {
+  const other = lang === 'en' ? 'pl' : 'en';
+  const files = { [lang]: file, [other]: altFile };
+  if (lang === 'pl') sitemap.push([file, altFile]);
+  return `<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${title}</title>
+<meta name="description" content="${description}">
+<meta name="theme-color" content="#0A0C11">
+<link rel="canonical" href="${pageUrl(file)}">
+<link rel="alternate" hreflang="pl" href="${pageUrl(files.pl)}">
+<link rel="alternate" hreflang="en" href="${pageUrl(files.en)}">
+<link rel="alternate" hreflang="x-default" href="${pageUrl(files.pl)}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="vonmi">
+<meta property="og:locale" content="${LOCALE[lang]}">
+<meta property="og:locale:alternate" content="${LOCALE[other]}">
+<meta property="og:title" content="${title}">
+<meta property="og:description" content="${description}">
+<meta property="og:url" content="${pageUrl(file)}">
+<meta property="og:image" content="${SITE}${image}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="${rel(file, 'favicon.svg')}" type="image/svg+xml">
+<link rel="icon" href="${rel(file, 'favicon.ico')}" sizes="48x48">
+<link rel="apple-touch-icon" href="${rel(file, 'apple-touch-icon.png')}">
+<link rel="stylesheet" href="${rel(file, 'assets/style.css')}">${extra}`;
+}
+
+function layout({ lang, file, title, description, body, altFile, image = `assets/og/home-${lang}.png`, extra }) {
   const t = T[lang];
   const p = prefix(lang);
   const other = lang === 'en' ? 'pl' : 'en';
-  const url = `https://vonmi.app/${file.replace(/index\.html$/, '')}`;
   const home = rel(file, p);
   const isHome = file === `${p}index.html`;
   const anchor = (id) => (isHome ? `#${id}` : `${home}#${id}`);
   return `<!doctype html>
 <html lang="${lang}">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${title}</title>
-<meta name="description" content="${description}">
-<meta name="theme-color" content="#0A0C11">
-<meta property="og:type" content="website">
-<meta property="og:title" content="${title}">
-<meta property="og:description" content="${description}">
-<meta property="og:url" content="${url}">
-<link rel="canonical" href="${url}">
-<link rel="icon" href="${rel(file, 'favicon.svg')}" type="image/svg+xml">
-<link rel="stylesheet" href="${rel(file, 'assets/style.css')}">
-<link rel="alternate" hreflang="${other}" href="https://vonmi.app/${altFile.replace(/index\.html$/, '')}">
+${head({ lang, file, altFile, title, description, image, extra })}
 </head>
 <body>
 <div class="bg-grid" aria-hidden="true"></div>
@@ -148,9 +181,7 @@ for (const lang of LANGS) {
       : '';
     const cards = APPS.map((app) => {
       const page = rel(file, `${p}${app.slug}/`);
-      const stores = app.stores
-        ? `<a class="btn btn-sm" href="${app.stores.appStore}">App Store</a><a class="btn btn-sm" href="${app.stores.googlePlay}">Google Play</a>`
-        : '';
+      const stores = app.stores ? badges(app.stores, t, file) : '';
       return `<article class="app">
     <div class="app-top">
       ${appIcon(app, file, 64)}
@@ -159,13 +190,23 @@ for (const lang of LANGS) {
     <p>${app.summary[lang]}</p>
     <div class="chips">${app.tech.map((x) => `<span>${x}</span>`).join('')}</div>
     <div class="app-foot">
-      <div class="store-btns">${stores}</div>
+      ${stores || '<span></span>'}
       <a class="more" href="${page}">${t.more} →</a>
     </div>
   </article>`;
     }).join('\n  ');
+    const structured = jsonLd({
+      '@context': 'https://schema.org',
+      '@graph': [
+        { '@type': 'WebSite', '@id': `${SITE}#website`, name: 'vonmi', url: SITE, inLanguage: lang, publisher: { '@id': `${SITE}#person` } },
+        {
+          '@type': 'Person', '@id': `${SITE}#person`, name: OWNER, url: SITE, jobTitle: 'Mobile app developer',
+          knowsAbout: ['Flutter', 'iOS', 'Android', 'Firebase'], sameAs: SOCIAL.map((s) => s.url),
+        },
+      ],
+    });
     write(file, layout({
-      lang, file, altFile: `${po}index.html`, title: 'vonmi', description: t.homeDescription,
+      lang, file, altFile: `${po}index.html`, title: 'vonmi', description: t.homeDescription, extra: `\n${structured}`,
       body: `
 <div class="wrap hero">
   <div>
@@ -200,12 +241,21 @@ for (const lang of LANGS) {
   </ol>
 </div></section>
 
+<section id="process" class="section"><div class="wrap">
+  <p class="label">${t.processLabel}</p>
+  <h2>${t.processTitle}</h2>
+  <ol class="process">
+    ${t.process.map(([h, d], i) => `<li><b>${String(i + 1).padStart(2, '0')}</b><strong>${h}</strong><span>${d}</span></li>`).join('\n    ')}
+  </ol>
+</div></section>
+
 <section id="contact" class="section cta"><div class="wrap">
   <p class="label">${t.contactLabel}</p>
   <h2>${t.contactTitle}</h2>
   <p>${t.contactText}</p>
   <div class="actions">
-    ${socialButtons(true)}
+    <a class="btn btn-primary" href="mailto:${WORK_EMAIL}">${MAIL_ICON}${WORK_EMAIL}</a>
+    ${socialButtons(false)}
   </div>
 </div></section>`,
     }));
@@ -216,11 +266,28 @@ for (const lang of LANGS) {
     const file = `${p}${app.slug}/index.html`;
     const docs = (LEGAL[app.slug] ?? []).map((d) => [t[d.key], rel(file, `${p}${app.slug}/${d.slug}/`)]);
     const stores = app.stores
-      ? `<div class="actions">
-  <a class="btn btn-primary" href="${app.stores.appStore}">${t.appStore}</a>
-  <a class="btn" href="${app.stores.googlePlay}">${t.googlePlay}</a>
-</div>`
+      ? badges(app.stores, t, file)
       : `<p class="soon-note"><i class="dot soon"></i>${t.comingSoonStores}</p>`;
+    const structured = jsonLd({
+      '@context': 'https://schema.org',
+      '@type': 'MobileApplication',
+      name: app.name[lang],
+      alternateName: app.name[lang === 'pl' ? 'en' : 'pl'] !== app.name[lang] ? app.name[lang === 'pl' ? 'en' : 'pl'] : undefined,
+      description: app.summary[lang],
+      url: pageUrl(file),
+      image: `${SITE}assets/og/${app.slug}-${lang}.png`,
+      operatingSystem: 'iOS, Android',
+      applicationCategory: app.category,
+      inLanguage: ['pl', 'en'],
+      author: { '@type': 'Person', name: OWNER, url: SITE },
+      ...(app.stores && {
+        installUrl: app.stores.googlePlay,
+        sameAs: [app.stores.appStore, app.stores.googlePlay],
+        offers: app.free ? { '@type': 'Offer', price: 0, priceCurrency: 'PLN' } : undefined,
+      }),
+      ...(app.screens && { screenshot: app.screens.map((s) => SITE + s) }),
+    });
+    const banner = app.appStoreId ? `\n<meta name="apple-itunes-app" content="app-id=${app.appStoreId}">` : '';
     const features = app.features
       ? `<ul class="features">${app.features[lang]
           .map(([h, d]) => `<li><strong>${h}</strong><span>${d}</span></li>`)
@@ -233,6 +300,7 @@ for (const lang of LANGS) {
       : '';
     write(file, layout({
       lang, file, altFile: `${po}${app.slug}/index.html`, title: `${app.name[lang]} · vonmi`, description: app.tag[lang],
+      image: `assets/og/${app.slug}-${lang}.png`, extra: `${banner}\n${structured}`,
       body: `
 <div class="wrap narrow page">
 <a class="crumb" href="${rel(file, p)}#apps">← ${t.back}</a>
@@ -257,7 +325,6 @@ ${docs.map(([label, href]) => `  <li><a href="${href}">${label}<span aria-hidden
     const linksPath = (l) => `${prefix(l)}links/`;
     const file = `${linksPath(lang)}index.html`;
     const altFile = `${linksPath(other)}index.html`;
-    const url = `https://vonmi.app/${linksPath(lang)}`;
     const row = (href, icon, title, hint) =>
       `<a class="lt-row" href="${href}">${icon}<span>${title}${hint ? `<small>${hint}</small>` : ''}</span><span class="lt-chev" aria-hidden="true">→</span></a>`;
     const apps = APPS.map((app) => {
@@ -280,19 +347,7 @@ ${docs.map(([label, href]) => `  <li><a href="${href}">${label}<span aria-hidden
     write(file, `<!doctype html>
 <html lang="${lang}">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>vonmi · links</title>
-<meta name="description" content="${t.linksBio}">
-<meta name="theme-color" content="#0A0C11">
-<meta property="og:type" content="website">
-<meta property="og:title" content="vonmi">
-<meta property="og:description" content="${t.linksBio}">
-<meta property="og:url" content="${url}">
-<link rel="canonical" href="${url}">
-<link rel="icon" href="${rel(file, 'favicon.svg')}" type="image/svg+xml">
-<link rel="stylesheet" href="${rel(file, 'assets/style.css')}">
-<link rel="alternate" hreflang="${other}" href="https://vonmi.app/${linksPath(other)}">
+${head({ lang, file, altFile, title: 'vonmi · links', description: t.linksBio, image: `assets/og/home-${lang}.png` })}
 </head>
 <body class="lt">
 <div class="lt-glow" aria-hidden="true"></div>
@@ -312,7 +367,7 @@ ${docs.map(([label, href]) => `  <li><a href="${href}">${label}<span aria-hidden
   </div>
   <p class="lt-group">${t.linksContact}</p>
   <div class="lt-list">
-    ${row(`mailto:${EMAIL}`, svg('<rect x="2" y="4" width="20" height="16" rx="3"/><path d="m3 6 9 7 9-7"/>'), EMAIL, t.supportHint)}
+    ${row(`mailto:${EMAIL}`, MAIL_ICON, EMAIL, t.supportHint)}
     ${row(rel(file, p), svg('<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>'), 'vonmi.app', t.fullSite)}
   </div>
   <footer class="lt-footer">${t.footer}</footer>
@@ -346,6 +401,7 @@ ${docs.map(([label, href]) => `  <li><a href="${href}">${label}<span aria-hidden
         .join('');
       write(file, layout({
         lang, file, altFile: `${po}${app.slug}/${doc.slug}/index.html`, title: `${title} · ${name}`, description: `${title} · ${name}`,
+        image: `assets/og/${app.slug}-${lang}.png`,
         body: `
 <div class="wrap narrow page">
 <a class="crumb crumb-app" href="${rel(file, `${p}${app.slug}/`)}">${appIcon(app, file, 28)}<span>${name}</span></a>
@@ -373,10 +429,27 @@ for (const file of [...polishFiles]) {
 `);
 }
 
+// Sitemap with both language versions of every page, and robots.txt pointing to it.
+write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${sitemap.flatMap(([pl, en]) => [pl, en].map((f) => `  <url>
+    <loc>${pageUrl(f)}</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="${pageUrl(pl)}"/>
+    <xhtml:link rel="alternate" hreflang="en" href="${pageUrl(en)}"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="${pageUrl(pl)}"/>
+  </url>`)).join('\n')}
+</urlset>
+`);
+write('robots.txt', `User-agent: *
+Allow: /
+
+Sitemap: ${SITE}sitemap.xml
+`);
+
 // 404 (bilingual, absolute links: served from any path)
 write('404.html', `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Not found · vonmi</title><meta name="theme-color" content="#0A0C11"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/style.css"></head>
+<title>Not found · vonmi</title><meta name="robots" content="noindex"><meta name="theme-color" content="#0A0C11"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/style.css"></head>
 <body><div class="bg-grid" aria-hidden="true"></div>
 <header class="site-header"><div class="wrap nav"><a class="brand" href="/">vonmi<b>_</b></a></div></header>
 <main><div class="wrap narrow page"><p class="prompt"><span>~/vonmi</span> $ cd page: no such file or directory</p><h1>404</h1>

@@ -1,0 +1,32 @@
+name: Check site
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Generated HTML matches tool/content.mjs
+        run: |
+          node tool/build.mjs > /dev/null
+          if ! git diff --quiet; then
+            echo "::error::The committed HTML is out of date. Run 'node tool/build.mjs' and commit the result."
+            git status --short
+            git diff --stat
+            exit 1
+          fi
+
+      - name: Links, images, JSON-LD, sitemap and store pages
+        run: node tool/check.mjs
