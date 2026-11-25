@@ -39,6 +39,11 @@ export const T = {
     contactLabel: '// contact',
     contactTitle: 'Let’s talk about your app.',
     contactText: 'Email me or message me on LinkedIn or Instagram.',
+    contactHint: 'A few sentences are enough: what the app should do, who it is for and when you need it.',
+    copyEmail: 'Copy email address',
+    copied: 'Copied',
+    mailSubject: 'An app built for me',
+    mailBody: 'Hi,\n\nWhat the app should do:\n\nWho it is for:\n\nWhen I need it:\n\nRough budget:\n\n',
     processLabel: '// process',
     processTitle: 'How we work together',
     process: [
@@ -97,6 +102,11 @@ export const T = {
     contactLabel: '// kontakt',
     contactTitle: 'Porozmawiajmy o Twojej aplikacji.',
     contactText: 'Napisz maila albo wiadomość przez LinkedIn lub Instagram.',
+    contactHint: 'Wystarczy kilka zdań: co ma robić aplikacja, dla kogo jest i na kiedy jej potrzebujesz.',
+    copyEmail: 'Kopiuj adres e-mail',
+    copied: 'Skopiowano',
+    mailSubject: 'Aplikacja na zlecenie',
+    mailBody: 'Cześć,\n\nCo ma robić aplikacja:\n\nDla kogo jest:\n\nNa kiedy jej potrzebuję:\n\nOrientacyjny budżet:\n\n',
     processLabel: '// proces',
     processTitle: 'Jak wygląda współpraca',
     process: [

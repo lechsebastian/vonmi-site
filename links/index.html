@@ -44,10 +44,10 @@
         <span><strong>Seansownik</strong><small>Śledź seriale, filmy i premiery.</small></span>
         <span class="lt-chev" aria-hidden="true">→</span>
       </a>
-      <div class="lt-stores">
-        <a class="lt-store" data-os="ios" href="https://apps.apple.com/app/id6824915682">App Store</a>
-        <a class="lt-store" data-os="android" href="https://play.google.com/store/apps/details?id=app.vonmi.seansownik">Google Play</a>
-      </div>
+      <div class="badges lt-badges">
+  <a class="badge" href="https://apps.apple.com/app/id6824915682"><img src="../assets/badges/app-store.svg" width="144" height="48" alt="Pobierz z App Store"></a>
+  <a class="badge badge-gp" href="https://play.google.com/store/apps/details?id=app.vonmi.seansownik"><img src="../assets/badges/google-play.png" width="185" height="72" alt="Pobierz z Google Play"></a>
+</div>
     </div>
     <div class="lt-app">
       <a class="lt-app-top" href="../spendio/">
@@ -65,13 +65,5 @@
   </div>
   <footer class="lt-footer">© 2026 Sebastian Lech</footer>
 </main>
-<script>
-// Highlights the store for the visitor's phone; both buttons stay visible.
-(() => {
-  const ua = navigator.userAgent;
-  const os = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1) ? 'ios' : /Android/.test(ua) ? 'android' : null;
-  if (os) document.querySelectorAll('[data-os="' + os + '"]').forEach((a) => a.classList.add('primary'));
-})();
-</script>
 </body>
 </html>

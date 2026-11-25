@@ -39,6 +39,8 @@ const ICONS = {
 };
 
 const MAIL_ICON = svg('<rect x="2" y="4" width="20" height="16" rx="3"/><path d="m3 6 9 7 9-7"/>');
+const COPY_ICON = svg('<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>').replace('class="icon"', 'class="icon i-copy"');
+const CHECK_ICON = svg('<path d="M20 6 9 17l-5-5"/>').replace('class="icon"', 'class="icon i-check"');
 
 // Relative link from one output file to a site path ('' = home, 'spendio/' ...).
 function rel(from, to) {
@@ -130,7 +132,7 @@ ${body}
   <span>${t.footer}</span>
   <span class="footer-links">${SOCIAL.map((s) => `<a href="${s.url}" ${ext}>${s.name}</a>`).join('<span aria-hidden="true">·</span>')}</span>
 </div></footer>
-${isHome ? rotatorScript : ''}
+${isHome ? rotatorScript + copyScript : ''}
 </body>
 </html>
 `;
@@ -157,6 +159,29 @@ const rotatorScript = `<script>
     setTimeout(() => { i = (i + 1) % words.length; el.textContent = words[i]; el.classList.remove('out'); }, 250);
   }, 2400);
 })();
+</script>`;
+
+// Copies the email address; shows a short confirmation. Falls back for browsers without the Clipboard API.
+const copyScript = `
+<script>
+document.querySelectorAll('[data-copy]').forEach((btn) => {
+  const toast = btn.querySelector('.copy-toast');
+  let timer;
+  btn.addEventListener('click', async () => {
+    const text = btn.dataset.copy;
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      const ta = Object.assign(document.createElement('textarea'), { value: text });
+      ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.append(ta); ta.select(); document.execCommand('copy'); ta.remove();
+    }
+    toast.textContent = btn.dataset.done;
+    btn.classList.add('done');
+    clearTimeout(timer);
+    timer = setTimeout(() => { btn.classList.remove('done'); toast.textContent = ''; }, 2000);
+  });
+});
 </script>`;
 
 const socialButtons = (primary) =>
@@ -255,9 +280,13 @@ for (const lang of LANGS) {
   <h2>${t.contactTitle}</h2>
   <p>${t.contactText}</p>
   <div class="actions">
-    <a class="btn btn-primary" href="mailto:${WORK_EMAIL}">${MAIL_ICON}${WORK_EMAIL}</a>
+    <div class="mail-group">
+      <a class="btn btn-primary mail-link" href="mailto:${WORK_EMAIL}?subject=${encodeURIComponent(t.mailSubject)}&amp;body=${encodeURIComponent(t.mailBody.replaceAll('\n', '\r\n'))}">${MAIL_ICON}${WORK_EMAIL}</a>
+      <button class="btn btn-primary mail-copy" type="button" data-copy="${WORK_EMAIL}" data-done="${t.copied}" aria-label="${t.copyEmail}" title="${t.copyEmail}">${COPY_ICON}${CHECK_ICON}<span class="copy-toast" role="status" aria-live="polite"></span></button>
+    </div>
     ${socialButtons(false)}
   </div>
+  <p class="contact-hint">${t.contactHint}</p>
 </div></section>`,
     }));
   }
@@ -331,10 +360,7 @@ ${docs.map(([label, href]) => `  <li><a href="${href}">${label}<span aria-hidden
     const apps = APPS.map((app) => {
       const page = rel(file, `${p}${app.slug}/`);
       const stores = app.stores
-        ? `<div class="lt-stores">
-        <a class="lt-store" data-os="ios" href="${app.stores.appStore}">App Store</a>
-        <a class="lt-store" data-os="android" href="${app.stores.googlePlay}">Google Play</a>
-      </div>`
+        ? badges(app.stores, t, file).replace('class="badges"', 'class="badges lt-badges"')
         : `<div class="lt-soon"><i class="dot soon"></i>${t.comingSoonStores}</div>`;
       return `<div class="lt-app">
       <a class="lt-app-top" href="${page}">
@@ -373,14 +399,6 @@ ${head({ lang, file, altFile, title: 'vonmi · links', description: t.linksBio, 
   </div>
   <footer class="lt-footer">${t.footer}</footer>
 </main>
-<script>
-// Highlights the store for the visitor's phone; both buttons stay visible.
-(() => {
-  const ua = navigator.userAgent;
-  const os = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1) ? 'ios' : /Android/.test(ua) ? 'android' : null;
-  if (os) document.querySelectorAll('[data-os="' + os + '"]').forEach((a) => a.classList.add('primary'));
-})();
-</script>
 </body>
 </html>
 `);

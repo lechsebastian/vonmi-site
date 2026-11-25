@@ -73,7 +73,9 @@ p, li { max-width: 68ch; }
   border: 1px solid var(--line); background: var(--surface);
 }
 .btn:hover { border-color: var(--violet); }
-.btn-primary { background: var(--grad); border-color: transparent; color: #0A0C11; }
+/* background-origin: border-box keeps the gradient continuous under the transparent border
+   (otherwise the border shows the opposite end of the gradient on each side) */
+.btn-primary { background: var(--grad) border-box; border-color: transparent; color: #0A0C11; }
 .btn-primary:hover { border-color: transparent; filter: brightness(1.1); }
 .btn-sm { padding: 9px 14px; font-size: .9rem; }
 
@@ -132,13 +134,14 @@ p, li { max-width: 68ch; }
 .app-foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; }
 /* official store badges, equal visible height (the Google PNG has a 41/168 transparent margin) */
 .badges { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+/* The Google crop is a plain rectangle 1px outside the badge, so its own rounded border stays whole. */
 .badge { display: block; line-height: 0; border-radius: 8px; }
 .badge img { display: block; height: 48px; width: auto; }
-.badge-gp { overflow: hidden; }
-.badge-gp img { height: calc(48px * 250 / 168); margin: calc(-48px * 41 / 168); }
+.badge-gp { overflow: hidden; border-radius: 0; }
+.badge-gp img { height: calc(48px * 250 / 168); margin: calc(-48px * 40 / 168); }
 .badge:hover { filter: brightness(1.25); }
 .app .badge img { height: 40px; }
-.app .badge-gp img { height: calc(40px * 250 / 168); margin: calc(-40px * 41 / 168); }
+.app .badge-gp img { height: calc(40px * 250 / 168); margin: calc(-40px * 40 / 168); }
 .page > .badges { margin-bottom: 28px; }
 .more { font-weight: 600; color: var(--cyan); text-decoration: none; white-space: nowrap; }
 .more:hover { text-decoration: underline; }
@@ -165,6 +168,26 @@ p, li { max-width: 68ch; }
 .cta h2 { font-size: clamp(2rem, 5vw, 3.25rem); margin-bottom: 12px; }
 .cta p { color: var(--muted); margin: 0 auto 32px; }
 .cta .actions { justify-content: center; }
+.contact-hint { color: var(--muted); font-size: .9rem; margin: 20px auto 0 !important; }
+
+/* email button + attached copy button */
+.mail-group { display: inline-flex; max-width: 100%; }
+.mail-link { border-top-right-radius: 0; border-bottom-right-radius: 0; min-width: 0; }
+.mail-copy {
+  position: relative; font: inherit; cursor: pointer; padding-inline: 14px;
+  border-top-left-radius: 0; border-bottom-left-radius: 0;
+  border-left: 1px solid rgba(10, 12, 17, .25);
+  background: #2DD4EF; color: #0A0C11;
+}
+.mail-copy .i-check { display: none; }
+.mail-copy.done .i-copy { display: none; }
+.mail-copy.done .i-check { display: block; }
+.copy-toast:empty { display: none; }
+.copy-toast {
+  position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); white-space: nowrap;
+  padding: 4px 10px; border-radius: 6px; font-size: .8rem; font-weight: 600;
+  background: var(--surface-2); color: var(--fg); border: 1px solid var(--line);
+}
 
 /* footer */
 .site-footer { border-top: 1px solid var(--line); color: var(--muted); font-family: var(--mono); font-size: .8rem; }
@@ -234,13 +257,9 @@ th { color: var(--muted); font-weight: 600; font-size: .85rem; }
 .lt-app-top small, .lt-row small { display: block; color: var(--muted); font-size: .88rem; font-weight: 400; line-height: 1.4; }
 .lt-app-top:hover strong { color: var(--cyan); }
 .lt-chev { margin-left: auto; padding-left: 8px; color: var(--muted); }
-.lt-stores { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
-.lt-store {
-  display: flex; justify-content: center; padding: 11px; border-radius: 12px; font-weight: 600; font-size: .92rem;
-  background: var(--surface-2); border: 1px solid var(--line); color: var(--fg); text-decoration: none;
-}
-.lt-store:hover { border-color: var(--violet); }
-.lt-store.primary { background: var(--grad); border-color: transparent; color: #0A0C11; }
+.lt-badges { justify-content: center; gap: 10px; margin-top: 14px; }
+.lt-badges .badge img { height: 42px; }
+.lt-badges .badge-gp img { height: calc(42px * 250 / 168); margin: calc(-42px * 40 / 168); }
 .lt-soon { display: flex; align-items: center; gap: 8px; margin-top: 12px; padding: 10px 12px; border-radius: 12px; border: 1px dashed var(--line); color: var(--muted); font-size: .9rem; }
 .lt-row {
   display: flex; align-items: center; gap: 14px; padding: 15px 16px; border-radius: 14px;
@@ -265,4 +284,6 @@ th { color: var(--muted); font-weight: 600; font-size: .85rem; }
 }
 @media (max-width: 420px) {
   .app-foot { flex-direction: column; align-items: flex-start; }
+  .mail-link { padding-inline: 14px; font-size: .92rem; }
+  .mail-copy { padding-inline: 12px; }
 }

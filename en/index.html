@@ -126,10 +126,14 @@
   <h2>Let’s talk about your app.</h2>
   <p>Email me or message me on LinkedIn or Instagram.</p>
   <div class="actions">
-    <a class="btn btn-primary" href="mailto:sebastianlech.mobile@gmail.com"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m3 6 9 7 9-7"/></svg>sebastianlech.mobile@gmail.com</a>
+    <div class="mail-group">
+      <a class="btn btn-primary mail-link" href="mailto:sebastianlech.mobile@gmail.com?subject=An%20app%20built%20for%20me&amp;body=Hi%2C%0D%0A%0D%0AWhat%20the%20app%20should%20do%3A%0D%0A%0D%0AWho%20it%20is%20for%3A%0D%0A%0D%0AWhen%20I%20need%20it%3A%0D%0A%0D%0ARough%20budget%3A%0D%0A%0D%0A"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m3 6 9 7 9-7"/></svg>sebastianlech.mobile@gmail.com</a>
+      <button class="btn btn-primary mail-copy" type="button" data-copy="sebastianlech.mobile@gmail.com" data-done="Copied" aria-label="Copy email address" title="Copy email address"><svg class="icon i-copy" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><svg class="icon i-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="copy-toast" role="status" aria-live="polite"></span></button>
+    </div>
     <a class="btn" href="https://www.linkedin.com/in/sebastianlech/" target="_blank" rel="me noopener"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn</a>
     <a class="btn" href="https://instagram.com/mobile.design.developer" target="_blank" rel="me noopener"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><path d="M17.5 6.5h.01"/></svg>Instagram</a>
   </div>
+  <p class="contact-hint">A few sentences are enough: what the app should do, who it is for and when you need it.</p>
 </div></section>
 </main>
 <footer class="site-footer"><div class="wrap">
@@ -147,6 +151,26 @@
     setTimeout(() => { i = (i + 1) % words.length; el.textContent = words[i]; el.classList.remove('out'); }, 250);
   }, 2400);
 })();
+</script>
+<script>
+document.querySelectorAll('[data-copy]').forEach((btn) => {
+  const toast = btn.querySelector('.copy-toast');
+  let timer;
+  btn.addEventListener('click', async () => {
+    const text = btn.dataset.copy;
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      const ta = Object.assign(document.createElement('textarea'), { value: text });
+      ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.append(ta); ta.select(); document.execCommand('copy'); ta.remove();
+    }
+    toast.textContent = btn.dataset.done;
+    btn.classList.add('done');
+    clearTimeout(timer);
+    timer = setTimeout(() => { btn.classList.remove('done'); toast.textContent = ''; }, 2000);
+  });
+});
 </script>
 </body>
 </html>
