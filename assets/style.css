@@ -80,7 +80,8 @@ p, li { max-width: 68ch; }
 .btn-sm { padding: 9px 14px; font-size: .9rem; }
 
 /* hero */
-.hero { display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items: center; padding-block: 64px 96px; }
+/* overflow-x: clip keeps the phones' glow from making narrow screens scroll sideways */
+.hero { display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items: center; padding-block: 64px 96px; overflow-x: clip; }
 .prompt { font-family: var(--mono); color: var(--muted); font-size: .9rem; margin: 0 0 20px; }
 .prompt span { color: var(--cyan); }
 .caret { display: inline-block; width: .55em; height: 1em; background: var(--cyan); vertical-align: -2px; animation: blink 1s steps(1) infinite; }
@@ -89,11 +90,13 @@ p, li { max-width: 68ch; }
 .hero h1 { font-size: clamp(2.5rem, 5.5vw, 4rem); line-height: 1.05; letter-spacing: -.03em; margin: 0 0 20px; }
 .rot {
   display: inline-block; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent;
+  /* the gradient only paints inside the box: extend it under descenders (j, y, ę) without moving the layout */
+  padding-bottom: .15em; margin-bottom: -.15em;
   transition: opacity .25s ease, transform .25s ease;
 }
 .rot.out { opacity: 0; transform: translateY(.15em); }
 .lead { color: var(--muted); font-size: 1.15rem; }
-.hero .lead { max-width: 34ch; margin: 0 0 32px; }
+.hero .lead { max-width: 44ch; margin: 0 0 32px; }
 .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 36px; font-family: var(--mono); font-size: .8rem; color: var(--muted); }
 .tags span { border: 1px solid var(--line); border-radius: 6px; padding: 3px 9px; background: var(--surface); }
 
@@ -113,18 +116,22 @@ p, li { max-width: 68ch; }
 
 /* app cards: equal height, footer pinned to the bottom */
 .apps { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+/* --accent: the app's own colour (set per card), used as a soft glow and on hover */
 .app {
+  --accent: var(--line-hover);
   display: flex; flex-direction: column; gap: 16px; padding: 28px;
-  background: var(--surface); border: 1px solid var(--line); border-radius: 18px;
+  background: radial-gradient(110% 70% at 0% 0%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 65%), var(--surface);
+  border: 1px solid var(--line); border-radius: 18px;
   transition: border-color .2s, transform .2s;
 }
-.app:hover { border-color: var(--line-hover); transform: translateY(-2px); }
+.app:hover { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); transform: translateY(-2px); }
+.app .app-top .app-icon { box-shadow: 0 8px 28px color-mix(in srgb, var(--accent) 30%, transparent); }
+.app h3 a:hover { color: var(--accent); }
 .app-top { display: flex; gap: 16px; align-items: center; }
 .app-icon { flex: none; display: block; border-radius: 22.5%; }
 .app-icon-img { background: #fff; }
 .app h3 { margin: 0 0 2px; font-size: 1.3rem; }
 .app h3 a { color: var(--fg); text-decoration: none; }
-.app h3 a:hover { color: var(--cyan); }
 .app p { margin: 0; color: var(--muted); }
 .status { font-family: var(--mono); font-size: .78rem; display: inline-flex; align-items: center; gap: 6px; color: var(--muted); }
 .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green); flex: none; }
@@ -146,12 +153,26 @@ p, li { max-width: 68ch; }
 .more { font-weight: 600; color: var(--cyan); text-decoration: none; white-space: nowrap; }
 .more:hover { text-decoration: underline; }
 
-/* work */
-.work { display: grid; grid-template-columns: .9fr 1.1fr; gap: 56px; align-items: start; }
-.work-text { color: var(--muted); font-size: 1.1rem; margin: 0; }
-.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
-.steps li { background: var(--surface); padding: 18px 22px; display: flex; gap: 18px; align-items: baseline; max-width: none; }
-.steps b { font-family: var(--mono); color: var(--violet); font-size: .85rem; }
+/* work: what I build (mobile apps, AI for businesses) */
+.section h2 + .work-text { margin-top: -16px; }
+.work-text { color: var(--muted); font-size: 1.1rem; margin: 0 0 32px; }
+.offer { display: grid; grid-template-columns: 1fr 1.25fr; gap: 20px; align-items: stretch; }
+.offer-card { display: flex; flex-direction: column; padding: 28px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; }
+.offer-card h3 { display: flex; align-items: center; gap: 10px; margin: 0 0 20px; font-size: 1.2rem; }
+.offer-card h3 .icon { width: 22px; height: 22px; color: var(--cyan); }
+.offer-ai {
+  background: radial-gradient(120% 90% at 100% 0%, rgba(139,108,255,.12), transparent 60%), var(--surface);
+}
+.offer-ai h3 .icon { color: var(--violet); }
+.ticks, .uses { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.ticks li { display: flex; gap: 12px; align-items: baseline; max-width: none; }
+.ticks .tick { width: 16px; height: 16px; color: var(--cyan); transform: translateY(2px); }
+.uses li { max-width: none; padding-left: 14px; border-left: 2px solid var(--line-hover); }
+.uses strong { display: block; }
+.uses span { color: var(--muted); font-size: .95rem; line-height: 1.5; }
+.offer-note { margin: auto 0 0; padding-top: 20px; color: var(--muted); font-family: var(--mono); font-size: .78rem; }
+.offer-note a { text-decoration: none; }
+.offer-note a:hover { text-decoration: underline; }
 
 /* process */
 .process { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; counter-reset: none; }
@@ -168,26 +189,26 @@ p, li { max-width: 68ch; }
 .cta h2 { font-size: clamp(2rem, 5vw, 3.25rem); margin-bottom: 12px; }
 .cta p { color: var(--muted); margin: 0 auto 32px; }
 .cta .actions { justify-content: center; }
-.contact-hint { color: var(--muted); font-size: .9rem; margin: 20px auto 0 !important; }
 
-/* email button + attached copy button */
-.mail-group { display: inline-flex; max-width: 100%; }
-.mail-link { border-top-right-radius: 0; border-bottom-right-radius: 0; min-width: 0; }
-.mail-copy {
-  position: relative; font: inherit; cursor: pointer; padding-inline: 14px;
-  border-top-left-radius: 0; border-bottom-left-radius: 0;
-  border-left: 1px solid rgba(10, 12, 17, .25);
-  background: #2DD4EF; color: #0A0C11;
+/* "or copy the address": the address itself is the copy button */
+.cta .mail-line {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 10px;
+  margin: 24px auto 0; font-size: .9rem;
 }
-.mail-copy .i-check { display: none; }
+.mail-copy {
+  display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; cursor: pointer;
+  font: .88rem var(--mono); color: var(--fg); background: var(--surface); border: 1px dashed var(--line-hover); border-radius: 8px;
+  transition: border-color .15s, color .15s;
+}
+.mail-copy:hover { border-color: var(--cyan); border-style: solid; }
+.mail-copy:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+.mail-copy .icon { width: 15px; height: 15px; color: var(--muted); }
+.mail-copy .i-check { display: none; color: var(--green); }
+.mail-copy.done { border-color: var(--green); border-style: solid; }
 .mail-copy.done .i-copy { display: none; }
 .mail-copy.done .i-check { display: block; }
-.copy-toast:empty { display: none; }
-.copy-toast {
-  position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); white-space: nowrap;
-  padding: 4px 10px; border-radius: 6px; font-size: .8rem; font-weight: 600;
-  background: var(--surface-2); color: var(--fg); border: 1px solid var(--line);
-}
+.mail-addr { overflow-wrap: anywhere; }
+.copy-status { color: var(--green); font-family: var(--mono); font-size: .8rem; }
 
 /* footer */
 .site-footer { border-top: 1px solid var(--line); color: var(--muted); font-family: var(--mono); font-size: .8rem; }
@@ -274,7 +295,7 @@ th { color: var(--muted); font-weight: 600; font-size: .85rem; }
   .process { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 860px) {
-  .hero, .work { grid-template-columns: 1fr; }
+  .hero, .offer { grid-template-columns: 1fr; }
   .hero { padding-block: 40px 64px; }
   .phone-stage { min-height: 440px; }
   .apps { grid-template-columns: 1fr; }
@@ -284,6 +305,4 @@ th { color: var(--muted); font-weight: 600; font-size: .85rem; }
 }
 @media (max-width: 420px) {
   .app-foot { flex-direction: column; align-items: flex-start; }
-  .mail-link { padding-inline: 14px; font-size: .92rem; }
-  .mail-copy { padding-inline: 12px; }
 }

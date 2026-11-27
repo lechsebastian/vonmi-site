@@ -77,13 +77,13 @@ const phones = (screens) =>
 for (const lang of ['pl', 'en']) {
   const t = T[lang];
   const showcase = APPS.find((a) => a.screens);
-  const heroWord = t.heroHtml.match(/data-words="([^|"]+)/)[1];
-  const heroRest = t.heroHtml.split('</span>')[1].trim();
+  // The hero headline with its first (static) rotating phrase in the gradient.
+  const hero = t.heroHtml.replace(/<span class="rot"[^>]*>/, '<span>');
   render(`home-${lang}`, page(`
 <div class="text">
   <div class="brand">vonmi<b>_</b></div>
-  <h1>${lang === 'pl' ? `<span>${heroWord}</span><br>${heroRest}` : `I <span>${heroWord}</span><br>${heroRest}`}</h1>
-  <p>${t.homeLead}</p>
+  <h1>${hero}</h1>
+  <p>${t.ogLead}</p>
 </div>
 <div class="url">vonmi.app</div>
 ${phones(showcase.screens)}`, 'home'), 1200, 630, path.join(root, `assets/og/home-${lang}.jpg`));

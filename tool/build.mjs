@@ -41,6 +41,8 @@ const ICONS = {
 const MAIL_ICON = svg('<rect x="2" y="4" width="20" height="16" rx="3"/><path d="m3 6 9 7 9-7"/>');
 const COPY_ICON = svg('<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>').replace('class="icon"', 'class="icon i-copy"');
 const CHECK_ICON = svg('<path d="M20 6 9 17l-5-5"/>').replace('class="icon"', 'class="icon i-check"');
+const PHONE_ICON = svg('<rect x="5" y="2" width="14" height="20" rx="3"/><path d="M11 18h2"/>');
+const SPARK_ICON = svg('<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/>');
 
 // Relative link from one output file to a site path ('' = home, 'spendio/' ...).
 function rel(from, to) {
@@ -165,17 +167,17 @@ const rotatorScript = `<script>
 const copyScript = `
 <script>
 document.querySelectorAll('[data-copy]').forEach((btn) => {
-  const toast = btn.querySelector('.copy-toast');
+  const toast = btn.parentElement.querySelector('.copy-status');
   let timer;
-  btn.addEventListener('click', async () => {
+  btn.addEventListener('click', () => {
     const text = btn.dataset.copy;
-    try {
-      await navigator.clipboard.writeText(text);
-    } catch {
+    const fallback = () => {
       const ta = Object.assign(document.createElement('textarea'), { value: text });
       ta.style.position = 'fixed'; ta.style.opacity = '0';
       document.body.append(ta); ta.select(); document.execCommand('copy'); ta.remove();
-    }
+    };
+    // Confirm right away: some browsers leave the Clipboard API promise pending.
+    if (navigator.clipboard) navigator.clipboard.writeText(text).catch(fallback); else fallback();
     toast.textContent = btn.dataset.done;
     btn.classList.add('done');
     clearTimeout(timer);
@@ -208,7 +210,7 @@ for (const lang of LANGS) {
     const cards = APPS.map((app) => {
       const page = rel(file, `${p}${app.slug}/`);
       const stores = app.stores ? badges(app.stores, t, file) : '';
-      return `<article class="app">
+      return `<article class="app" style="--accent: ${app.accent}">
     <div class="app-top">
       ${appIcon(app, file, 64)}
       <div><h3><a href="${page}">${app.name[lang]}</a></h3>${status(app, t)}</div>
@@ -227,17 +229,17 @@ for (const lang of LANGS) {
         { '@type': 'WebSite', '@id': `${SITE}#website`, name: 'vonmi', url: SITE, inLanguage: lang, publisher: { '@id': `${SITE}#person` } },
         {
           '@type': 'Person', '@id': `${SITE}#person`, name: OWNER, url: SITE, jobTitle: 'Mobile app developer',
-          knowsAbout: ['Flutter', 'iOS', 'Android', 'Firebase'], sameAs: SOCIAL.map((s) => s.url),
+          knowsAbout: ['Flutter', 'iOS', 'Android', 'Firebase', 'AI'], sameAs: SOCIAL.map((s) => s.url),
         },
       ],
     });
     write(file, layout({
-      lang, file, altFile: `${po}index.html`, title: 'vonmi', description: t.homeDescription, extra: `\n${structured}`,
+      lang, file, altFile: `${po}index.html`, title: t.homeTitle, description: t.homeDescription, extra: `\n${structured}`,
       body: `
 <div class="wrap hero">
   <div>
     <p class="prompt"><span>~/vonmi</span> $ flutter run <i class="caret"></i></p>
-    <h1><span class="sr-only">${t.heroSr}</span><span aria-hidden="true">${t.heroHtml.replace('</span> ', '</span><br>')}</span></h1>
+    <h1><span class="sr-only">${t.heroSr}</span><span aria-hidden="true">${t.heroHtml}</span></h1>
     <p class="lead">${t.homeLead}</p>
     <div class="actions">
       <a class="btn btn-primary" href="#apps">${t.seeApps}</a>
@@ -256,15 +258,26 @@ for (const lang of LANGS) {
   </div>
 </div></section>
 
-<section id="work" class="section"><div class="wrap work">
-  <div>
-    <p class="label">${t.workLabel}</p>
-    <h2>${t.workTitle}</h2>
-    <p class="work-text">${t.workText}</p>
+<section id="work" class="section"><div class="wrap">
+  <p class="label">${t.workLabel}</p>
+  <h2>${t.workTitle}</h2>
+  <p class="work-text">${t.workText}</p>
+  <div class="offer">
+    <div class="offer-card">
+      <h3>${PHONE_ICON}${t.offer.mobile.title}</h3>
+      <ul class="ticks">
+        ${t.offer.mobile.items.map((s) => `<li>${CHECK_ICON.replace('i-check', 'tick')}${s}</li>`).join('\n        ')}
+      </ul>
+      <p class="offer-note"><a href="#apps">${t.offer.mobile.proof} →</a></p>
+    </div>
+    <div class="offer-card offer-ai">
+      <h3>${SPARK_ICON}${t.offer.ai.title}</h3>
+      <ul class="uses">
+        ${t.offer.ai.items.map(([h, d]) => `<li><strong>${h}</strong><span>${d}</span></li>`).join('\n        ')}
+      </ul>
+      <p class="offer-note">${t.offer.ai.note}</p>
+    </div>
   </div>
-  <ol class="steps">
-    ${t.services.map((s, i) => `<li><b>${String(i + 1).padStart(2, '0')}</b>${s}</li>`).join('\n    ')}
-  </ol>
 </div></section>
 
 <section id="process" class="section"><div class="wrap">
@@ -280,13 +293,10 @@ for (const lang of LANGS) {
   <h2>${t.contactTitle}</h2>
   <p>${t.contactText}</p>
   <div class="actions">
-    <div class="mail-group">
-      <a class="btn btn-primary mail-link" href="mailto:${WORK_EMAIL}?subject=${encodeURIComponent(t.mailSubject)}&amp;body=${encodeURIComponent(t.mailBody.replaceAll('\n', '\r\n'))}">${MAIL_ICON}${WORK_EMAIL}</a>
-      <button class="btn btn-primary mail-copy" type="button" data-copy="${WORK_EMAIL}" data-done="${t.copied}" aria-label="${t.copyEmail}" title="${t.copyEmail}">${COPY_ICON}${CHECK_ICON}<span class="copy-toast" role="status" aria-live="polite"></span></button>
-    </div>
+    <a class="btn btn-primary" href="mailto:${WORK_EMAIL}?subject=${encodeURIComponent(t.mailSubject)}&amp;body=${encodeURIComponent(t.mailBody.replaceAll('\n', '\r\n'))}">${MAIL_ICON}${t.writeEmail}</a>
     ${socialButtons(false)}
   </div>
-  <p class="contact-hint">${t.contactHint}</p>
+  <p class="mail-line">${t.orCopy} <button class="mail-copy" type="button" data-copy="${WORK_EMAIL}" data-done="${t.copied}" aria-label="${t.copyEmail}" title="${t.copyEmail}"><span class="mail-addr">${WORK_EMAIL}</span>${COPY_ICON}${CHECK_ICON}</button><span class="copy-status" role="status" aria-live="polite"></span></p>
 </div></section>`,
     }));
   }
@@ -394,6 +404,7 @@ ${head({ lang, file, altFile, title: 'vonmi · links', description: t.linksBio, 
   </div>
   <p class="lt-group">${t.linksContact}</p>
   <div class="lt-list">
+    ${row(`mailto:${WORK_EMAIL}?subject=${encodeURIComponent(t.mailSubject)}`, SPARK_ICON, WORK_EMAIL, t.workHint)}
     ${row(`mailto:${EMAIL}`, MAIL_ICON, EMAIL, t.supportHint)}
     ${row(rel(file, p), svg('<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>'), 'vonmi.app', t.fullSite)}
   </div>
